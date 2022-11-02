@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "**/.github": true,
+    "**/.husky": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/.github": true,
+    "**/.husky": true,
+    "**/node_modules": true
+  }
+}
