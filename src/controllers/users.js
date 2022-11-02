@@ -21,7 +21,7 @@ module.exports = {
   create: catchAsync(async (req, res, next) => {
     try {
       const { firstName, lastName, email } = req.body;
-      const avatar = req.body.avatar || '';
+      const avatar = req.body.avatar || null;
       const ID_ROLE_USER = 2; // USER ID CORRESPONDIENTE AL ROL DE USUARIO
       await User.create({ firstName, lastName, email, avatar, roleId: ID_ROLE_USER });
       endpointResponse({
