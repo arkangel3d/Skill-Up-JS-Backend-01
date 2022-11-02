@@ -5,7 +5,7 @@ const isAdmin = (req, res, next) => {
   const token = authorization.split(' ')[1];
   const ID_ROLE_ADMIN = 1; // USER ID CORRESPONDIENTE AL ROL DE ADMIN
 
-  if (jwt.decode(token).id_role !== ID_ROLE_ADMIN) {
+  if (jwt.decode(token).roleId !== ID_ROLE_ADMIN) {
     return res.status(403).json({
       status: false,
       code: 403,

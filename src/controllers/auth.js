@@ -9,6 +9,7 @@ module.exports = {
     try {
       const { user } = req.body;
       const token = jwt.sign(user);
+      console.log(user);
       endpointResponse({
         res,
         message: 'Login exitoso.',
