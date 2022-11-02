@@ -10,8 +10,9 @@
     "url": "https://github.com/gabodmc/nodejs-boilerplate"
   },
   "scripts": {
-    "start": "node app.js",
-    "test": "mocha ./test/*.js"
+    "start": "node src/app.js",
+    "test": "mocha ./test/*.js",
+    "dev": "nodemon src/app.js"
   },
   "engines": {
     "node": ">=0.14"
