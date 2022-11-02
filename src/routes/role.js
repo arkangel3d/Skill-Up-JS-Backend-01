@@ -6,10 +6,10 @@ const router = express.Router();
 const { get, create } = require("../controllers/role");
 
 // MIDDLEWARES
-
+const isAdmin = require("../middlewares/isAdmin");
 
 // ROUTES
 router.get('/', get);
-router.post('/', create)
+router.post('/', isAdmin, create)
 
 module.exports = router;
