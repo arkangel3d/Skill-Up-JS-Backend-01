@@ -12,12 +12,14 @@
   "scripts": {
     "start": "node src/app.js",
     "test": "mocha ./test/*.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "reset-db": "reset-db.sh"
   },
   "engines": {
     "node": ">=0.14"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
