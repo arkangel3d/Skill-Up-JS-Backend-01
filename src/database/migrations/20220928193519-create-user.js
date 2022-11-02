@@ -17,6 +17,9 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
+      password: {
+        type: Sequelize.STRING
+      },
       avatar: {
         type: Sequelize.STRING
       },
@@ -33,7 +36,7 @@ module.exports = {
       },
       deletedAt: {
         type: Sequelize.DATE
-      },
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {
