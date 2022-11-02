@@ -21,9 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     avatar: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
-    deletedAt: {
-      type: DataTypes.DATE
-    },
   }, {
     sequelize,
     timestamps: true,

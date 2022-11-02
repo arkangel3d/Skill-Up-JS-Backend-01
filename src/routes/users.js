@@ -13,6 +13,7 @@ const lastNameIsValid = require('../middlewares/lastNameIsValid');
 const checkUserId = require('../middlewares/checkUserId');
 const checkUserEmail = require('../middlewares/checkUserEmail');
 
+// ROUTES
 router.get('/', get);
 router.get('/getById/:id', checkUserId, getById);
 router.get('/getByEmail/', checkUserEmail, getOne);
