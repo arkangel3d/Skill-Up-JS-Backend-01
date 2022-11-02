@@ -12,24 +12,18 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Transaction, { foreignKey: 'originUserId' });
       User.hasMany(models.Transaction, { foreignKey: 'destinationUserId' });
     }
-  }
-  User.init(
-    {
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      avatar: DataTypes.STRING,
-      roleId: DataTypes.INTEGER,
-      deletedAt: {
-        type: DataTypes.DATE
-      }
-    },
-    {
-      sequelize,
-      timestamps: true,
-      modelName: 'User'
-    }
-  );
+  };
+  
+  User.init({
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    email: DataTypes.STRING,
+    avatar: DataTypes.STRING,
+    roleId: DataTypes.INTEGER
+  }, {
+    sequelize,
+    timestamps: true,
+    modelName: 'User',
+  });
   return User;
 };
