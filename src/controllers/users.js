@@ -2,6 +2,7 @@ const createHttpError = require('http-errors');
 const { User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
+const bcrypt = require('../helpers/bcrypt');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -20,10 +21,11 @@ module.exports = {
   }),
   create: catchAsync(async (req, res, next) => {
     try {
-      const { firstName, lastName, email } = req.body;
+      const { firstName, lastName, email, password } = req.body;
       const avatar = req.body.avatar || null;
       const ID_ROLE_USER = 2; // USER ID CORRESPONDIENTE AL ROL DE USUARIO
-      await User.create({ firstName, lastName, email, avatar, roleId: ID_ROLE_USER });
+      const hashedPassword = await bcrypt.hash(password);
+      await User.create({ firstName, lastName, email, password: hashedPassword, avatar, roleId: ID_ROLE_USER });
       endpointResponse({
         res,
         message: 'Usuario creado.',
