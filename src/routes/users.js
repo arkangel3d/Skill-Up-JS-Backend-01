@@ -1,11 +1,17 @@
-const express = require('express')
-const {
-   get,
-} = require('../controllers/users')
+const express = require('express');
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', get)
+// CONTROLLERS
+const { create, get } = require('../controllers/users');
 
+// MIDDLEWARES
+const emailIsValid = require('../middlewares/emailIsValid');
+const emailIsUnique = require('../middlewares/emalIsUnique');
+const firstNameIsValid = require('../middlewares/firstNameIsValid');
+const lastNameIsValid = require('../middlewares/lastNameIsValid');
 
-module.exports = router
+router.get('/', get);
+router.post('/', [firstNameIsValid, lastNameIsValid, emailIsValid, emailIsUnique], create);
+
+module.exports = router;
