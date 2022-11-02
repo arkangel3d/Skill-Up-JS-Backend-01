@@ -1,13 +1,14 @@
 'use strict';
 const { faker } = require('@faker-js/faker');
 
+
 const users = Array.from({ length: 50 }).map(() => {
   return {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
     //address: faker.address.streetAddress(),
-    password: faker.internet.password(),
+    password: "$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy",
     avatar: faker.system.commonFileName('jpg'),
     roleId: 3
 
