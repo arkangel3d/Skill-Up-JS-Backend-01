@@ -19,6 +19,34 @@ module.exports = {
       next(httpError);
     }
   }),
+  getById: catchAsync(async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const response = await User.findByPk(id);
+      endpointResponse({
+        res,
+        message: 'Usuario encontrado',
+        body: response
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error retrieving user] - [Index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  getOne: catchAsync(async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const response = await User.findOne({ where: { email } });
+      endpointResponse({
+        res,
+        message: "Usuario encontrado",
+        body: response
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error retrieving user] - [Index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
   create: catchAsync(async (req, res, next) => {
     try {
       const { firstName, lastName, email, password } = req.body;

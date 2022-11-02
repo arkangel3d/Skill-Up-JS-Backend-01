@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Transaction, { foreignKey: 'destinationUserId' });
     }
   };
+  
   User.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
@@ -26,5 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     modelName: 'User',
   });
+  
   return User;
 };
