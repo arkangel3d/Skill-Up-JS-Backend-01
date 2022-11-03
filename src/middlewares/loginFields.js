@@ -39,7 +39,7 @@ const loginFileds = async (req, res, next) => {
 
   delete user.password;
 
-  req.body.user = user;
+  req.user = user;
 
   next();
 };
