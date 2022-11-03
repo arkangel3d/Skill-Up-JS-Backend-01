@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // CONTROLLERS
-const { create, get, getById, getOne } = require('../controllers/users');
+const { create, get, getById, getByEmail } = require('../controllers/users');
 
 // MIDDLEWARES
 const emailIsUnique = require('../middlewares/emalIsUnique');
@@ -13,14 +13,20 @@ const lastNameIsValid = require('../middlewares/lastNameIsValid');
 const checkUserId = require('../middlewares/checkUserId');
 const checkUserEmail = require('../middlewares/checkUserEmail');
 const passwordIdValid = require('../middlewares/passwordIsValid');
+const tokenIsValid = require('../middlewares/tokenIsValid');
+const isAdmin = require('../middlewares/isAdmin');
 
-router.get('/', get);
-router.get('/getById/:id', checkUserId, getById);
-router.get('/getByEmail/', checkUserEmail, getOne);
-router.post('/', [firstNameIsValid, lastNameIsValid, emailIsValid, emailIsUnique], create);
+// Example: http://localhost:3000/users - Need a valid token!
+router.get('/', [tokenIsValid], get);
 
-router.get('/', get);
+// Example: http://localhost:3000/users/1 - Need a valid token!
+router.get('/:id', [tokenIsValid, checkUserId], getById);
+
+// Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
+router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
+
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
 
+// TODO: Put Route
 
 module.exports = router;

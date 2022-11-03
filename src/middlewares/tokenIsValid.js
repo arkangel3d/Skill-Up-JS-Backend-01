@@ -22,7 +22,9 @@ const tokenIsValid = (req, res, next) => {
     });
   }
 
-  req.body.token = token;
+  const user = jwt.decode(token);
+  req.user = user;
+  req.token = token;
 
   next();
 };
