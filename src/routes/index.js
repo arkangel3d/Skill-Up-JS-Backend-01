@@ -2,6 +2,7 @@ const express = require('express')
 const usersRouter = require('./users')
 const roleRouter = require('./role')
 const authRouter = require('./auth');
+const transactionRouter = require('./transaction');
 
 const router = express.Router();
 
@@ -11,5 +12,6 @@ router.get('/', (req, res) => res.send('Hello world'));
 router.use('/users', usersRouter)
 router.use('/role', roleRouter)
 router.use('/auth', authRouter);
+router.use('/transaction', transactionRouter);
 
 module.exports = router;

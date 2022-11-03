@@ -6,7 +6,7 @@ const { catchAsync } = require('../helpers/catchAsync');
 module.exports = {
     get: catchAsync(async (req, res, next) => {
         try {
-            const response = Role.findAll();
+            const response = await Role.findAll();
             endpointResponse({
                 res,
                 message: 'Lista de Roles',
