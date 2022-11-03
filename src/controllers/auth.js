@@ -7,9 +7,8 @@ const jwt = require('../helpers/jwt');
 module.exports = {
   login: catchAsync(async (req, res, next) => {
     try {
-      const { user } = req.body;
+      const { user } = req;
       const token = jwt.sign(user);
-      console.log(user);
       endpointResponse({
         res,
         message: 'Login exitoso.',
@@ -19,6 +18,22 @@ module.exports = {
             lastName: user.lastName
           },
           token
+        }
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  me: catchAsync(async (req, res, next) => {
+    try {
+      const { user } = req;
+      const { createdAt, updatedAt, iat, ...rest } = user;
+      endpointResponse({
+        res,
+        message: 'Tus datos de perfil.',
+        body: {
+          ...rest
         }
       });
     } catch (error) {
