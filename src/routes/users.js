@@ -4,7 +4,6 @@ const router = express.Router();
 
 // CONTROLLERS
 const { create, get, getById, getByEmail, edit, remove } = require('../controllers/users');
-
 // MIDDLEWARES
 const emailIsUnique = require('../middlewares/emalIsUnique');
 const emailIsValid = require('../middlewares/emailIsValid');
