@@ -29,7 +29,9 @@ const loginFileds = async (req, res, next) => {
   user = user.dataValues;
 
   const hashedPassword = user.password;
-  if (!bcrypt.compare(password, hashedPassword)) {
+  const PasswordsMatch = await bcrypt.compare(password, hashedPassword);
+
+  if (!PasswordsMatch) {
     return res.status(403).json({
       status: false,
       code: 403,

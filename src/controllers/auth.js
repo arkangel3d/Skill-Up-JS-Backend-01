@@ -16,7 +16,8 @@ module.exports = {
         body: {
           user: {
             firstName: user.firstName,
-            lastName: user.lastName
+            lastName: user.lastName,
+            role: user.roleId
           },
           token
         }
