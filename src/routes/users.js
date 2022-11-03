@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // CONTROLLERS
-const { create, get, getById, getByEmail, remove } = require('../controllers/users');
+const { create, get, getById, getByEmail, edit, remove } = require('../controllers/users');
 
 // MIDDLEWARES
 const emailIsUnique = require('../middlewares/emalIsUnique');
@@ -15,6 +15,7 @@ const checkUserEmail = require('../middlewares/checkUserEmail');
 const passwordIdValid = require('../middlewares/passwordIsValid');
 const tokenIsValid = require('../middlewares/tokenIsValid');
 const isAdmin = require('../middlewares/isAdmin');
+const userHasAccess = require('../middlewares/userHasAccess');
 
 // Example: http://localhost:3000/users - Need a valid token!
 router.get('/', [tokenIsValid], get);
@@ -27,7 +28,7 @@ router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
 
-// TODO: Put Route
+router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIdValid, checkUserId], edit);
 
 // Example: http://localhost:3000/users/1 - Need a valid token! - Need a extUser or admin token!
 router.delete('/:id', [tokenIsValid, isAdmin, checkUserId], remove);
