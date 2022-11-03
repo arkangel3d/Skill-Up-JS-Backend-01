@@ -7,12 +7,10 @@ const { create, get } = require('../controllers/categories');
 
 // MIDDLEWARES
 const categoryNameExists = require('../middlewares/categoryNameExists')
-// const emailIsValid = require('../middlewares/emailIsValid');
-// const emailIsUnique = require('../middlewares/emalIsUnique');
-// const firstNameIsValid = require('../middlewares/firstNameIsValid');
-// const lastNameIsValid = require('../middlewares/lastNameIsValid');
+const tokenIsValid = require('../middlewares/tokenIsValid');
+const isAdmin = require('../middlewares/isAdmin');
 
-router.get('/', get);
-router.post('/', [categoryNameExists], create);
+router.get('/', [tokenIsValid], get);
+router.post('/', [tokenIsValid, isAdmin, categoryNameExists,], create);
 
 module.exports = router;
