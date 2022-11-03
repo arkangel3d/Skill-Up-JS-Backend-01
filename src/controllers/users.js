@@ -3,12 +3,20 @@ const { User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../helpers/bcrypt');
+const { Op } = require('sequelize');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-      const response = await User.findAll();
+      const roleId = req.user.roleId;
+      const response = await User.findAll({
+        where: {
+          roleId: {
+            [Op.gte]: roleId
+          }
+        }
+      });
       endpointResponse({
         res,
         message: 'Lista de usuarios.',
@@ -21,8 +29,7 @@ module.exports = {
   }),
   getById: catchAsync(async (req, res, next) => {
     try {
-      const id = req.params.id;
-      const response = await User.findByPk(id);
+      const response = req.user;
       endpointResponse({
         res,
         message: 'Usuario encontrado',
@@ -33,13 +40,12 @@ module.exports = {
       next(httpError);
     }
   }),
-  getOne: catchAsync(async (req, res, next) => {
+  getByEmail: catchAsync(async (req, res, next) => {
     try {
-      const { email } = req.body;
-      const response = await User.findOne({ where: { email } });
+      const response = req.user;
       endpointResponse({
         res,
-        message: "Usuario encontrado",
+        message: 'Usuario encontrado',
         body: response
       });
     } catch (error) {
@@ -62,6 +68,43 @@ module.exports = {
           lastName,
           email,
           avatar
+        }
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  edit: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { firstName, lastName, password } = req.body;
+      const hashedPassword = await bcrypt.hash(password);
+      User.update({ firstName, lastName, password: hashedPassword }, { where: { id } });
+      endpointResponse({
+        res,
+        message: 'Usuario editado.',
+        body: {
+          id,
+          firstName,
+          lastName,
+          password: hashedPassword
+        }
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  remove: catchAsync(async (req, res, next) => {
+    try {
+      const id = req.user.id;
+      const response = await User.destroy({ where: { id } });
+      endpointResponse({
+        res,
+        message: 'Usuario eliminado.',
+        body: {
+          response
         }
       });
     } catch (error) {
