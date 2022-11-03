@@ -75,6 +75,27 @@ module.exports = {
       next(httpError);
     }
   }),
+  edit: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { firstName, lastName, password } = req.body;
+      const hashedPassword = await bcrypt.hash(password);
+      User.update({ firstName, lastName, password: hashedPassword }, { where: { id } });
+      endpointResponse({
+        res,
+        message: 'Usuario editado.',
+        body: {
+          id,
+          firstName,
+          lastName,
+          password: hashedPassword
+        }
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
   remove: catchAsync(async (req, res, next) => {
     try {
       const id = req.user.id;
