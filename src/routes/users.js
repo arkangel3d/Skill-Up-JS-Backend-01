@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // CONTROLLERS
+
 const { create, get, getById, getByEmail, remove } = require('../controllers/users');
 
 // MIDDLEWARES
