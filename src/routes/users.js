@@ -27,6 +27,6 @@ router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
 
-// TODO: Put Route
+// TODO: Put Route.
 
 module.exports = router;

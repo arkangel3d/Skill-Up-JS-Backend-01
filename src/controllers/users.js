@@ -3,7 +3,7 @@ const { User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../helpers/bcrypt');
-const { where, Op } = require('sequelize');
+const { Op } = require('sequelize');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {

@@ -23,6 +23,7 @@ const tokenIsValid = (req, res, next) => {
   }
 
   const user = jwt.decode(token);
+
   req.user = user;
   req.token = token;
 

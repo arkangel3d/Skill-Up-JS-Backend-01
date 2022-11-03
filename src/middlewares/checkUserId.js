@@ -1,8 +1,8 @@
 const { User } = require('../database/models');
 
 const checkUserId = async (req, res, next) => {
-  const id = req.params.id;
-  const roleId = req.roleId;
+  const { id } = req.params;
+  const { roleId } = req;
 
   const user = await User.findByPk(id);
 

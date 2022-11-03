@@ -1,8 +1,8 @@
 const { User } = require('../database/models');
 
 const checkUserEmail = async (req, res, next) => {
-  const email = req.params.email;
-  const roleId = req.roleId;
+  const { email } = req.params;
+  const { roleId } = req;
   const user = await User.findOne({ where: { email } });
 
   if (!user || user?.roleId < roleId) {
