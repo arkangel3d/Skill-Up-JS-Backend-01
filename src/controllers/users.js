@@ -74,5 +74,21 @@ module.exports = {
       const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
       next(httpError);
     }
+  }),
+  remove: catchAsync(async (req, res, next) => {
+    try {
+      const id = req.user.id;
+      const response = await User.destroy({ where: { id } });
+      endpointResponse({
+        res,
+        message: 'Usuario eliminado.',
+        body: {
+          response
+        }
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
   })
 };
