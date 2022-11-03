@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
   Transaction.init({
     concept: DataTypes.STRING,
     amount: DataTypes.DECIMAL(10, 2),
-    type: DataTypes.STRING,
     transactionDate: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
     originUserId: DataTypes.INTEGER,

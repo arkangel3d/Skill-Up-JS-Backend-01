@@ -14,9 +14,6 @@ module.exports = {
       amount: {
         type: Sequelize.DECIMAL
       },
-      type: {
-        type: Sequelize.STRING
-      },
       transactionDate: {
         type: Sequelize.STRING
       },
