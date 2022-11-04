@@ -14,7 +14,9 @@ const userHasAccess = (req, res, next) => {
 
   if (roleToken !== ID_ROLE_EXTAGENCY && roleToken !== ID_ROLE_ADMIN && id !== idToken) {
     return res.status(401).json({
-      msg: 'No tienes permisos para acceder :().'
+      status: false,
+      code: 403,
+      msg: 'No tienes permisos para acceder.'
     });
   }
 

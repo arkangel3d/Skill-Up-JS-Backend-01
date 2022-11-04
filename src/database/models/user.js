@@ -9,24 +9,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.belongsTo(models.Role, { foreignKey: 'roleId' });
-      User.hasMany(models.Transaction, { foreignKey: 'originUserId' });
-      User.hasMany(models.Transaction, { foreignKey: 'destinationUserId' });
+      User.hasMany(models.Transaction, { foreignKey: 'originUserId', as: 'origin' });
+      User.hasMany(models.Transaction, { foreignKey: 'destinationUserId', as: 'destination' });
     }
-  };
-  
-  User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    address: DataTypes.STRING,
-    avatar: DataTypes.STRING,
-    roleId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    timestamps: true,
-    modelName: 'User',
-  });
-  
+  }
+
+  User.init(
+    {
+      firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      address: DataTypes.STRING,
+      avatar: DataTypes.STRING,
+      roleId: DataTypes.INTEGER
+    },
+    {
+      sequelize,
+      timestamps: true,
+      modelName: 'User'
+    }
+  );
+
   return User;
 };
