@@ -29,6 +29,12 @@ module.exports = {
       roleId: {
         type: Sequelize.INTEGER
       },
+      status: {
+        type: Sequelize.ENUM('active', 'blocked')
+      },
+      balance: {
+        type: Sequelize.Decimal(10, 2)
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -36,7 +42,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {

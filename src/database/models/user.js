@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       address: DataTypes.STRING,
       avatar: DataTypes.STRING,
-      roleId: DataTypes.INTEGER
+      roleId: DataTypes.INTEGER,
+      status: DataTypes.ENUM('active', 'blocked'),
+      balance: DataTypes.Decimal(10, 2)
     },
     {
       sequelize,
