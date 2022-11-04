@@ -33,7 +33,7 @@ module.exports = {
         type: Sequelize.ENUM('active', 'blocked')
       },
       balance: {
-        type: Sequelize.Decimal(10, 2)
+        type: Sequelize.DECIMAL(10, 2)
       },
       createdAt: {
         allowNull: false,
