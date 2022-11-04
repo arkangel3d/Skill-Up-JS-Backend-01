@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       avatar: DataTypes.STRING,
       roleId: DataTypes.INTEGER,
       status: DataTypes.ENUM('active', 'blocked'),
-      balance: DataTypes.DOUBLE
+      balance: DataTypes.Decimal(10, 2)
     },
     {
       sequelize,
