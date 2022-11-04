@@ -12,21 +12,26 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Transaction, { foreignKey: 'originUserId' });
       User.hasMany(models.Transaction, { foreignKey: 'destinationUserId' });
     }
-  };
-  
-  User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    address: DataTypes.STRING,
-    avatar: DataTypes.STRING,
-    roleId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    timestamps: true,
-    modelName: 'User',
-  });
-  
+  }
+
+  User.init(
+    {
+      firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      address: DataTypes.STRING,
+      avatar: DataTypes.STRING,
+      roleId: DataTypes.INTEGER,
+      status: DataTypes.ENUM('active', 'blocked'),
+      balance: DataTypes.Decimal(10, 2)
+    },
+    {
+      sequelize,
+      timestamps: true,
+      modelName: 'User'
+    }
+  );
+
   return User;
 };
