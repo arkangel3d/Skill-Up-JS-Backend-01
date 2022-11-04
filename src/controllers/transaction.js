@@ -105,7 +105,7 @@ module.exports = {
         }),
         User.update({ balance: Number(destination.balance) + amount }, { where: { id: destination.id } })
       ]);
-      if (origin.id !== destination.id) {
+      if (origin.id !== 1) {
         await User.update({ balance: Number(origin.balance) - amount }, { where: { id: origin.id } });
       }
       endpointResponse({

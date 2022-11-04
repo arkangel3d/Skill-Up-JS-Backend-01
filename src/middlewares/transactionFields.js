@@ -21,14 +21,15 @@ const transactionsFields = async (req, res, next) => {
   /* ORIGEN == DESTINO --- CARGA DE SALDO */
   if (Number(originUserId) === Number(destinationUserId)) {
     console.log('*** CARGA DE SALDO ***');
+    const bank = await User.findByPk(1);
     const existCategory = await Category.findByPk(2);
     req.transaction = {
       amount,
       origin: {
-        id: existOriginUserId.id,
-        firstName: existOriginUserId.firstName,
-        lastName: existOriginUserId.lastName,
-        balance: existOriginUserId.balance
+        id: bank.id,
+        firstName: bank.firstName,
+        lastName: null,
+        balance: bank.balance
       },
       destination: {
         id: existOriginUserId.id,
