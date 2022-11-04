@@ -62,7 +62,7 @@ const transactionsFields = async (req, res, next) => {
     console.log('*** TRANSFERENCIA ***');
     const existDestinationUserId = await User.findByPk(destinationUserId);
 
-    if (!existDestinationUserId) {
+    if (!existDestinationUserId || existDestinationUserId.status === 'blocked') {
       return res.status(400).json({
         status: false,
         code: 400,
