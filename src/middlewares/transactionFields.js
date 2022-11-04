@@ -1,8 +1,10 @@
 const { Category, User } = require('../database/models');
+const { ID_ROLE_EXTAGENCY } = require('../constanst/roles');
 
 const transactionsFields = async (req, res, next) => {
-  let { concept, amount, categoryId, originUserId, destinationUserId } = req.body;
-
+  const originUserId = req.user.id;
+  let { concept, amount, categoryId, destinationUserId } = req.body;
+  const date = new Date().toString();
   amount = Number(amount);
   concept = concept || null;
 
@@ -14,6 +16,90 @@ const transactionsFields = async (req, res, next) => {
     });
   }
 
+  const existOriginUserId = await User.findByPk(originUserId);
+
+  /* ORIGEN == DESTINO --- CARGA DE SALDO */
+  if (Number(originUserId) === Number(destinationUserId)) {
+    console.log('*** CARGA DE SALDO ***');
+    const existCategory = await Category.findByPk(2);
+    req.transaction = {
+      amount,
+      origin: {
+        id: existOriginUserId.id,
+        firstName: existOriginUserId.firstName,
+        lastName: existOriginUserId.lastName,
+        balance: existOriginUserId.balance
+      },
+      destination: {
+        id: existOriginUserId.id,
+        firstName: existOriginUserId.firstName,
+        lastName: existOriginUserId.lastName,
+        balance: existOriginUserId.balance
+      },
+      category: {
+        id: existCategory.id,
+        name: existCategory.name,
+        description: existCategory.description,
+        type: existCategory.type
+      },
+      concept,
+      date
+    };
+
+    return next();
+  }
+
+  /* ORIGEN != DESTINO && DESTINO != BANCO --- TRANFERENCIA */
+  if (existOriginUserId.balance < amount) {
+    return res.status(400).json({
+      status: false,
+      code: 400,
+      message: 'Saldo insuficiente.'
+    });
+  }
+
+  if (Number(originUserId) !== Number(destinationUserId) && Number(destinationUserId) !== ID_ROLE_EXTAGENCY) {
+    console.log('*** TRANSFERENCIA ***');
+    const existDestinationUserId = await User.findByPk(destinationUserId);
+
+    if (!existDestinationUserId) {
+      return res.status(400).json({
+        status: false,
+        code: 400,
+        message: 'No existe el usuario.'
+      });
+    }
+
+    const existCategory = await Category.findByPk(1);
+    req.transaction = {
+      amount,
+      origin: {
+        id: existOriginUserId.id,
+        firstName: existOriginUserId.firstName,
+        lastName: existOriginUserId.lastName,
+        balance: existOriginUserId.balance
+      },
+      destination: {
+        id: existDestinationUserId.id,
+        firstName: existDestinationUserId.firstName,
+        lastName: existDestinationUserId.lastName,
+        balance: existDestinationUserId.balance
+      },
+      category: {
+        id: existCategory.id,
+        name: existCategory.name,
+        description: existCategory.description,
+        type: existCategory.type
+      },
+      concept,
+      date
+    };
+
+    return next();
+  }
+
+  /* DESTINO == BANCO --- GASTO (de cualquier tipo) */
+  console.log('*** GASTO ***');
   if (!categoryId) {
     return res.status(400).json({
       status: false,
@@ -22,66 +108,45 @@ const transactionsFields = async (req, res, next) => {
     });
   }
 
-  const existCategory = await Category.findByPk(categoryId);
+  const existCategory = await Category.findOne({
+    where: {
+      type: 'out',
+      id: categoryId
+    }
+  });
+
   if (!existCategory) {
     return res.status(400).json({
       status: false,
       code: 400,
-      message: 'No existe categoryId.'
+      message: 'Categoría inválida.'
     });
   }
 
-  if (!originUserId) {
-    return res.status(400).json({
-      status: false,
-      code: 400,
-      message: 'El campo originUserId es obligatorio.'
-    });
-  }
-
-  const existOriginUserId = await User.findByPk(originUserId);
-  if (!existOriginUserId) {
-    return res.status(400).json({
-      status: false,
-      code: 400,
-      message: 'No existe originUserId.'
-    });
-  }
-
-  if (existOriginUserId.balance < amount) {
-    return res.status(400).json({
-      status: false,
-      code: 400,
-      message: 'Fondos insuficientes.'
-    });
-  }
-
-  if (!destinationUserId) {
-    return res.status(400).json({
-      status: false,
-      code: 400,
-      message: 'El campo destinationUserId es obligatorio.'
-    });
-  }
-
-  const existDestinationUserId = await User.findByPk(destinationUserId);
-  if (!existDestinationUserId) {
-    return res.status(400).json({
-      status: false,
-      code: 400,
-      message: 'No existe destinationUserId.'
-    });
-  }
-
-  const transactionDate = new Date();
+  const existDestinationUserId = await User.findByPk(1);
 
   req.transaction = {
     amount,
-    originUserId,
-    destinationUserId,
-    categoryId,
+    origin: {
+      id: existOriginUserId.id,
+      firstName: existOriginUserId.firstName,
+      lastName: existOriginUserId.lastName,
+      balance: existOriginUserId.balance
+    },
+    destination: {
+      id: existDestinationUserId.id,
+      firstName: existDestinationUserId.firstName,
+      lastName: existDestinationUserId.lastName,
+      balance: existDestinationUserId.balance
+    },
+    category: {
+      id: existCategory.id,
+      name: existCategory.name,
+      description: existCategory.description,
+      type: existCategory.type
+    },
     concept,
-    transactionDate
+    date
   };
 
   next();

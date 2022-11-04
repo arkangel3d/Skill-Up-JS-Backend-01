@@ -1,8 +1,7 @@
-const jwt = require('../helpers/jwt');
-
 const { Category, Transaction, User } = require('../database/models');
+const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constanst/roles');
 
-const userHasAccessToTransaction = async (req, res, next) => {
+const userHasAccessToViewTransaction = async (req, res, next) => {
   const { user } = req;
 
   let { id } = req.params;
@@ -11,10 +10,6 @@ const userHasAccessToTransaction = async (req, res, next) => {
   const idToken = user.id;
   const roleToken = user.roleId;
 
-  const ID_ROLE_EXTAGENCY = 1; // USER ID CORRESPONDIENTE AL ROL DE EXT-AGENCY
-  const ID_ROLE_ADMIN = 2; // USER ID CORRESPONDIENTE AL ROL DE ADMIN
-
-  // const transaction = await Transaction.findByPk(id);
   const transaction = await Transaction.findByPk(id, {
     attributes: ['id', 'amount', 'concept', 'transactionDate'],
     include: [
@@ -33,7 +28,8 @@ const userHasAccessToTransaction = async (req, res, next) => {
         as: 'destination',
         attributes: ['id', 'firstName', 'lastName']
       }
-    ]
+    ],
+    order: [['id', 'DESC']]
   });
 
   const origin = transaction.origin.id;
@@ -56,4 +52,4 @@ const userHasAccessToTransaction = async (req, res, next) => {
   next();
 };
 
-module.exports = userHasAccessToTransaction;
+module.exports = userHasAccessToViewTransaction;

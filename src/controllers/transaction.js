@@ -1,7 +1,7 @@
-const { Transaction, Category, User } = require('../database/models');
-const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
+const { endpointResponse } = require('../helpers/success');
 const { Op } = require('sequelize');
+const { Transaction, Category, User } = require('../database/models');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -25,11 +25,12 @@ module.exports = {
             as: 'destination',
             attributes: ['id', 'firstName', 'lastName']
           }
-        ]
+        ],
+        order: [['id', 'DESC']]
       });
       endpointResponse({
         res,
-        message: 'Lista de transacciones todos los usuarios',
+        message: 'Lista de transacciones todos los usuarios.',
         body: response
       });
     } catch (error) {
@@ -43,7 +44,7 @@ module.exports = {
 
       endpointResponse({
         res,
-        message: 'Lista de transacciones todos los usuarios',
+        message: 'Transacción encontrada.',
         body: response
       });
     } catch (error) {
@@ -76,11 +77,12 @@ module.exports = {
             as: 'destination',
             attributes: ['id', 'firstName', 'lastName']
           }
-        ]
+        ],
+        order: [['id', 'DESC']]
       });
       endpointResponse({
         res,
-        message: 'Lista de tus transacciones',
+        message: 'Lista de tus transacciones.',
         body: response
       });
     } catch (error) {
@@ -90,14 +92,59 @@ module.exports = {
   }),
   create: catchAsync(async (req, res, next) => {
     try {
-      /*  const { concept, amount, transactionDate, categoryId } = req.body;
-      const originUserId = req.body.originUserId || null;
-      const destinationUserId = req.body.destinationUserId || null;
-      await Transaction.create({ concept, amount, transactionDate, categoryId }); */
+      const { amount, origin, destination, category, concept, date } = req.transaction;
+
+      await Promise.all([
+        Transaction.create({
+          amount,
+          originUserId: origin.id,
+          destinationUserId: destination.id,
+          categoryId: category.id,
+          concept,
+          transactionDate: date
+        }),
+        User.update({ balance: Number(destination.balance) + amount }, { where: { id: destination.id } })
+      ]);
+      if (origin.id !== destination.id) {
+        await User.update({ balance: Number(origin.balance) - amount }, { where: { id: origin.id } });
+      }
       endpointResponse({
         res,
-        message: 'Transaccion creada',
-        body: {}
+        message: 'Transaccion creada.',
+        body: {
+          amount,
+          origin: {
+            id: origin.id,
+            firstName: origin.firstName,
+            lastName: origin.lastName
+          },
+          destination: {
+            id: destination.id,
+            firstName: destination.firstName,
+            lastName: destination.lastName
+          },
+          category,
+          concept,
+          date
+        }
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating transaction] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  update: catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const { concept } = req.body;
+    try {
+      Transaction.update({ concept }, { where: { id } });
+      endpointResponse({
+        res,
+        message: 'Transaccion actualizada.',
+        body: {
+          id,
+          concept
+        }
       });
     } catch (error) {
       const httpError = createHttpError(error.statusCode, `[Error creating transaction] - [index - GET]: ${error.message}`);

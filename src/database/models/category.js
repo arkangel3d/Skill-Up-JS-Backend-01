@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       description: DataTypes.STRING,
-      type: DataTypes.STRING
+      type: DataTypes.ENUM('in', 'out', 'transference')
     },
     {
       sequelize,

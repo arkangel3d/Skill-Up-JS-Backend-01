@@ -1,4 +1,4 @@
-const jwt = require('../helpers/jwt');
+const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constanst/roles');
 
 const userHasAccess = (req, res, next) => {
   const { user } = req;
@@ -8,9 +8,6 @@ const userHasAccess = (req, res, next) => {
 
   const idToken = user.id;
   const roleToken = user.roleId;
-
-  const ID_ROLE_EXTAGENCY = 1; // USER ID CORRESPONDIENTE AL ROL DE EXT-AGENCY
-  const ID_ROLE_ADMIN = 2; // USER ID CORRESPONDIENTE AL ROL DE ADMIN
 
   if (roleToken !== ID_ROLE_EXTAGENCY && roleToken !== ID_ROLE_ADMIN && id !== idToken) {
     return res.status(401).json({
