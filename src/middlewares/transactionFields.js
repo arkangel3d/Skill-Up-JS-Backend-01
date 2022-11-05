@@ -1,5 +1,5 @@
 const { Category, User } = require('../database/models');
-const { ID_ROLE_EXTAGENCY } = require('../constanst/roles');
+const { ID_ROLE_EXTAGENCY } = require('../constants/roles');
 
 const transactionsFields = async (req, res, next) => {
   const originUserId = req.user.id;
