@@ -1,5 +1,5 @@
 const { Category, Transaction, User } = require('../database/models');
-const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constanst/roles');
+const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constants/roles');
 
 const userHasAccessToViewTransaction = async (req, res, next) => {
   const { user } = req;

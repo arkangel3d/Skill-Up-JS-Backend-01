@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 
 const { User } = require('../database/models');
-const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constanst/roles');
+const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constants/roles');
 
 const checkUserEmail = async (req, res, next) => {
   const { email } = req.params;
