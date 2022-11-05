@@ -3,32 +3,149 @@
 const { faker } = require('@faker-js/faker');
 
 const transactions = [
-  ...Array.from({ length: 50 }).map(() => {
-    const userId = faker.datatype.number({ min: 2, max: 22, presicion: 1 });
-    return {
-      concept: faker.random.words(3),
-      amount: faker.datatype.number({ min: 0.5, max: 100, precision: 0.01 }),
-      transactionDate: faker.date.past(),
-      originUserId: userId,
-      destinationUserId: userId,
-      categoryId: faker.helpers.arrayElement([0, 1])
-    };
-  }),
-  // a cuple of users that made transferences
+  // USER_ID: 2
   {
-    concept: faker.random.words(3),
-    amount: faker.datatype.number({ min: 0.5, max: 100, precision: 0.01 }),
-    transactionDate: faker.date.past(),
-    originUserId: 5,
-    destinationUserId: 20,
-    categoryId: 't'
+    amount: 122450,
+    originUserId: 1,
+    destinationUserId: 2,
+    categoryId: 2,
+    transactionDate: faker.date.past()
   },
   {
-    concept: faker.random.words(3),
-    amount: faker.datatype.number({ min: 0.5, max: 100, precision: 0.01 }),
+    amount: 20000,
+    originUserId: 2,
+    destinationUserId: 3,
+    categoryId: 1,
     transactionDate: faker.date.past(),
-    originUserId: 20,
-    destinationUserId: 3
+    concept: 'Transferencia a Jane'
+  },
+  {
+    amount: 30000,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 3,
+    transactionDate: faker.date.past(),
+    concept: 'Pago alquiler (Inmobiliaria Ezequilian)'
+  },
+  {
+    amount: 15000,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 4,
+    transactionDate: faker.date.past(),
+    concept: 'Compra en Supermercado Disco'
+  },
+  {
+    amount: 5500,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 4,
+    transactionDate: faker.date.past(),
+    concept: 'Compra en Supermercado Cotto'
+  },
+  {
+    amount: 17000,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 8,
+    transactionDate: faker.date.past(),
+    concept: 'Compra de Zapatillas'
+  },
+  {
+    amount: 575,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 9,
+    transactionDate: faker.date.past(),
+    concept: 'Viaje en taxi hacia la oficina'
+  },
+  {
+    amount: 9630,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 7,
+    transactionDate: faker.date.past(),
+    concept: 'Pago de obra Social'
+  },
+  {
+    amount: 5300,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 5,
+    transactionDate: faker.date.past(),
+    concept: 'Pago factura de internet'
+  },
+  {
+    amount: 9420,
+    originUserId: 2,
+    destinationUserId: 1,
+    categoryId: 8,
+    transactionDate: faker.date.past(),
+    concept: 'Compra de camisa'
+  },
+  // USER_ID: 3
+  {
+    amount: 66000,
+    originUserId: 1,
+    destinationUserId: 3,
+    categoryId: 2,
+    transactionDate: faker.date.past()
+  },
+  {
+    amount: 27500,
+    originUserId: 3,
+    destinationUserId: 1,
+    categoryId: 3,
+    transactionDate: faker.date.past(),
+    concept: 'Pago alquiler (Inmobiliaria Roca)'
+  },
+  {
+    amount: 22740,
+    originUserId: 3,
+    destinationUserId: 1,
+    categoryId: 4,
+    transactionDate: faker.date.past(),
+    concept: 'Compra en Supermercado Cotto'
+  },
+  {
+    amount: 7682,
+    originUserId: 3,
+    destinationUserId: 1,
+    categoryId: 6,
+    transactionDate: faker.date.past(),
+    concept: 'PAgo monotributo'
+  },
+  {
+    amount: 575,
+    originUserId: 3,
+    destinationUserId: 1,
+    categoryId: 9,
+    transactionDate: faker.date.past(),
+    concept: 'Viaje en taxi hacia la clínica (ida)'
+  },
+  {
+    amount: 610,
+    originUserId: 3,
+    destinationUserId: 1,
+    categoryId: 9,
+    transactionDate: faker.date.past(),
+    concept: 'Viaje en taxi hacia la clínica (vuelta)'
+  },
+  {
+    amount: 1900,
+    originUserId: 3,
+    destinationUserId: 1,
+    categoryId: 5,
+    transactionDate: faker.date.past(),
+    concept: 'Pago factura telefonía'
+  },
+  {
+    amount: 12350,
+    originUserId: 3,
+    destinationUserId: 1,
+    categoryId: 8,
+    transactionDate: faker.date.past(),
+    concept: 'Compra de jean'
   }
 ];
 

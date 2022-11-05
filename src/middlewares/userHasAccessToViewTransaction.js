@@ -32,8 +32,8 @@ const userHasAccessToViewTransaction = async (req, res, next) => {
     order: [['id', 'DESC']]
   });
 
-  const origin = transaction.origin.id;
-  const destination = transaction.destination.id;
+  const origin = transaction?.origin.id;
+  const destination = transaction?.destination.id;
 
   req.transaction = transaction;
 

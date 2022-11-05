@@ -21,6 +21,36 @@ const categories = [
     name: 'Supermercado',
     type: 'out',
     description: 'Compra en el supermercado.'
+  },
+  {
+    name: 'Servicios',
+    type: 'out',
+    description: 'Gasto en servicios (electricidad, gas, internet, etc.).'
+  },
+  {
+    name: 'Impuestos',
+    type: 'out',
+    description: 'Gasto en impuestos públicos.'
+  },
+  {
+    name: 'Prepaga',
+    type: 'out',
+    description: 'Gasto en obra social prepaga.'
+  },
+  {
+    name: 'Vestimenta',
+    type: 'out',
+    description: 'Gasto en vestimenta.'
+  },
+  {
+    name: 'Transporte',
+    type: 'out',
+    description: 'Gasto en transporte público.'
+  },
+  {
+    name: 'Otros gastos',
+    type: 'out',
+    description: 'Gasto tipo de gasto.'
   }
 ];
 
