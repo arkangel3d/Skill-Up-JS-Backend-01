@@ -10,6 +10,7 @@ const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constanst/roles');
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
+    const { id } = req.user;
     try {
       const { id, roleId } = req.user;
       if (roleId === ID_ROLE_EXTAGENCY || roleId === ID_ROLE_ADMIN) {
@@ -41,6 +42,7 @@ module.exports = {
           status: 'active'
         },
         attributes: ['id', 'firstName', 'lastName', 'avatar']
+
       });
       return endpointResponse({
         res,
