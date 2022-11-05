@@ -15,10 +15,10 @@ const roles = [
   },
   {
     id: 3,
-    name: 'usr',
+    name: 'user',
     description: 'a common user'
-  },
-]
+  }
+];
 
 module.exports = {
   async up(queryInterface, Sequelize) {
