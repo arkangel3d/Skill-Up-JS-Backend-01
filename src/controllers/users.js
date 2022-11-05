@@ -5,12 +5,32 @@ const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../helpers/bcrypt');
 const { Op } = require('sequelize');
 
+const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constanst/roles');
+
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     const { id } = req.user;
     try {
-      const roleId = req.user.roleId;
+      const { id, roleId } = req.user;
+      if (roleId === ID_ROLE_EXTAGENCY || roleId === ID_ROLE_ADMIN) {
+        const response = await User.findAll({
+          where: {
+            roleId: {
+              [Op.gte]: roleId
+            },
+            id: {
+              [Op.notBetween]: [id, id]
+            }
+          },
+          attributes: ['id', 'firstName', 'lastName', 'email', 'password', 'address', 'avatar', 'balance', 'status', 'balance']
+        });
+        return endpointResponse({
+          res,
+          message: 'Lista de usuarios.',
+          body: response
+        });
+      }
       const response = await User.findAll({
         where: {
           roleId: {
@@ -18,10 +38,13 @@ module.exports = {
           },
           id: {
             [Op.notBetween]: [id, id]
-          }
-        }
+          },
+          status: 'active'
+        },
+        attributes: ['id', 'firstName', 'lastName', 'avatar']
+
       });
-      endpointResponse({
+      return endpointResponse({
         res,
         message: 'Lista de usuarios.',
         body: response
