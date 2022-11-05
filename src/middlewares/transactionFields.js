@@ -10,22 +10,15 @@ const transactionsFields = async (req, res, next) => {
   concept = concept || null;
 
   //TODO: validation!
-  if (isNaN(amount)) {
-    return res.status(400).json({
-      status: false,
-      code: 400,
-      message: 'El campo amount es obligatorio y debe ser un número.'
-    });
-  }
-  if (isNaN(categoryId) && Number.isInteger(categoryId)) {
-    return res.status(400).json({
-      status: false,
-      code: 400,
-      message: 'El campo categoryId es obligatorio y debe ser un número entero.'
-    });
-  }
+  const validationErrors = []
 
   try {
+    if (isNaN(amount)) validationErrors.push('El campo amount es obligatorio y debe ser un número.');
+
+    if (isNaN(categoryId) || !Number.isInteger(categoryId)) validationErrors.push('El campo categoryId es obligatorio y debe ser un número entero.');
+
+    if (validationErrors.length > 0) throw new Error;
+
     const {
       name: categoryName,
       type: categoryType,
@@ -43,43 +36,20 @@ const transactionsFields = async (req, res, next) => {
 
     // State machine --> Category type: e=expense, i=income, t=transfer
 
-    if (categoryType === 't') {//TODO es lógica aparte
+    if (categoryType === 't') {// TRANFERS
       console.log('*** TRANSFERENCIA ***');
-      if (existOriginUserId.balance < amount) {
-        return res.status(400).json({
-          status: false,
-          code: 400,
-          message: 'Saldo insuficiente.'
-        });
-      }
-      const existDestinationUserId = await User.findByPk(destinationUserId);
+      if (existOriginUserId.balance < amount) validationErrors.push('Saldo insuficiente');
 
-      if (!existDestinationUserId || existDestinationUserId.status === 'blocked') {
-        return res.status(400).json({
-          status: false,
-          code: 400,
-          message: 'No existe el usuario.'
-        });
-      }
+      const existDestinationUserId = await User.findByPk(destinationUserId); // Existe usuario destino?
 
-      if (existDestinationUserId.id === existOriginUserId.id) {
-        return res.status(400).json({
-          status: false,
-          code: 400,
-          message: 'El usuario destino debe ser diferente al usuario origen.'
-        });
-      }
-      if (
-        existDestinationUserId.id === 1 ||
-        !existDestinationUserId ||
-        existDestinationUserId.status === 'blocked'
-      ) {
-        return res.status(400).json({
-          status: false,
-          code: 400,
-          message: 'No existe el usuario.'
-        });
-      }
+      if (!existDestinationUserId || existDestinationUserId.status === 'blocked') validationErrors.push('No existe el usuario.');
+
+      if (existDestinationUserId.id === existOriginUserId.id) validationErrors.push('El usuario destino debe ser diferente al usuario origen.');
+
+      if (!existDestinationUserId || existDestinationUserId.id === 1 || existDestinationUserId.status === 'blocked'
+      ) validationErrors.push('No existe el usuario.');
+
+
       req.transaction = {
         amount,
         origin: {
@@ -98,14 +68,14 @@ const transactionsFields = async (req, res, next) => {
         concept,
         date
       };
-
+      if (validationErrors.length > 0) throw new Error
       return next();
     }
 
     //carga o gasto
     const externalAgent = await User.findByPk(1); // every source or money destination that's outside the wallet
 
-    if (categoryType === 'i') {
+    if (categoryType === 'i') { // INCOMES
       console.log('*** CARGA DE SALDO ***');
       req.transaction = {
         amount,
@@ -126,18 +96,14 @@ const transactionsFields = async (req, res, next) => {
         date
       };
 
+      if (validationErrors.length > 0) throw new Error
       return next();
     }
 
-    if (categoryType === 'e') {
+    if (categoryType === 'e') { // EXPENSES
       console.log('*** GASTO ***');
-      if (existOriginUserId.balance < amount) {
-        return res.status(400).json({
-          status: false,
-          code: 400,
-          message: 'Saldo insuficiente.'
-        });
-      }
+      if (existOriginUserId.balance < amount) validationErrors.push('Saldo insuficiente');
+
       req.transaction = {
         amount,
         origin: {
@@ -157,11 +123,21 @@ const transactionsFields = async (req, res, next) => {
         date
       };
 
+      if (validationErrors.length > 0) throw new Error
       next();
     }
 
 
   } catch (error) {
+    if (validationErrors.length > 0) {
+      res.status(400).json({
+        status: false,
+        code: 400,
+        message: validationErrors.join('\n')
+      });
+      delete validationErrors;
+      return;
+    }
     const httpError = createHttpError(error.statusCode, `[Error retrieving transaction category] - [transaction create - POST]: ${error.message}`);
     next(httpError);
   }
