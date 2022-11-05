@@ -5,7 +5,7 @@ const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../helpers/bcrypt');
 const { Op } = require('sequelize');
 
-const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constanst/roles');
+const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constants/roles');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
