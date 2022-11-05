@@ -1,7 +1,7 @@
 'use strict';
 const { faker } = require('@faker-js/faker');
 
-const users = Array.from({ length: 22 }).map(() => {
+const users = Array.from({ length: 21 }).map(() => {
   return {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
@@ -32,7 +32,7 @@ const userOne = {
   password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
   roleId: 3,
   status: 'active',
-  balance: 10000
+  balance: 10025
 };
 
 const userTwo = {
@@ -42,7 +42,17 @@ const userTwo = {
   password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
   roleId: 3,
   status: 'active',
-  balance: 20000
+  balance: 12643
+};
+
+const userThree = {
+  firstName: 'Tom',
+  lastName: 'Smith',
+  email: 'tres@mail.com',
+  password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
+  roleId: 3,
+  status: 'blocked',
+  balance: 0
 };
 
 module.exports = {

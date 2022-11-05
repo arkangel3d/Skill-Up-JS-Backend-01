@@ -3,6 +3,9 @@ const { endpointResponse } = require('../helpers/success');
 const { Op } = require('sequelize');
 const { Transaction, Category, User } = require('../database/models');
 
+const calExpensesDistribution = require('../helpers/calcExpensesDistribution');
+const calcIncomes = require('../helpers/calcIncomes');
+
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
@@ -54,9 +57,8 @@ module.exports = {
   }),
   me: catchAsync(async (req, res, next) => {
     const { id } = req.user;
-    console.log(id);
     try {
-      const response = await Transaction.findAll({
+      let transactions = await Transaction.findAll({
         where: {
           [Op.or]: [{ originUserId: id }, { destinationUserId: id }]
         },
@@ -80,10 +82,40 @@ module.exports = {
         ],
         order: [['id', 'DESC']]
       });
+
+      // SE MAPEA LA RESPUESTA PARA OBTENER "dataValues" Y LUEGO SE MAPEA PARA CONVERTIR "amount" EN NÚMERO (LLEGA COMO STRING)
+      transactions = transactions.map((result) => result.dataValues).map((el) => ({ ...el, amount: Number(el.amount) }));
+
+      // SE OBTIENE EL BALANCE DEL USUARIO
+      const user = await User.findByPk(id, {
+        attributes: ['balance']
+      });
+      const balance = Number(user.balance);
+
+      const { incomes, totalIncomes } = await calcIncomes(id, transactions);
+
+      const { expenses, totalExpenses, expensesDistribution } = await calExpensesDistribution(id, transactions);
       endpointResponse({
         res,
         message: 'Lista de tus transacciones.',
-        body: response
+        body: {
+          balance,
+          incomes: {
+            amount: incomes.length,
+            total: totalIncomes,
+            details: incomes
+          },
+          expenses: {
+            amount: expenses.length,
+            total: totalExpenses,
+            details: expenses,
+            distriburion: expensesDistribution
+          },
+          transactions: {
+            amount: transactions.length,
+            details: transactions
+          }
+        }
       });
     } catch (error) {
       const httpError = createHttpError(error.statusCode, `[Error retrieving user's transactions] - [index - GET]: ${error.message}`);
