@@ -34,9 +34,9 @@ const transactionsFields = async (req, res, next) => {
       type: categoryType
     }
 
-    // State machine --> Category type: e=expense, i=income, t=transfer
+    // State machine --> Category type: out=expense, in=income, transference
 
-    if (categoryType === 't') {// TRANFERS
+    if (categoryType === 'transferene') {// TRANFERS
       console.log('*** TRANSFERENCIA ***');
       if (existOriginUserId.balance < amount) validationErrors.push('Saldo insuficiente');
 
@@ -75,7 +75,7 @@ const transactionsFields = async (req, res, next) => {
     //carga o gasto
     const externalAgent = await User.findByPk(1); // every source or money destination that's outside the wallet
 
-    if (categoryType === 'i') { // INCOMES
+    if (categoryType === 'in') { // INCOMES
       console.log('*** CARGA DE SALDO ***');
       req.transaction = {
         amount,
@@ -100,7 +100,7 @@ const transactionsFields = async (req, res, next) => {
       return next();
     }
 
-    if (categoryType === 'e') { // EXPENSES
+    if (categoryType === 'out') { // EXPENSES
       console.log('*** GASTO ***');
       if (existOriginUserId.balance < amount) validationErrors.push('Saldo insuficiente');
 
