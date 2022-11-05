@@ -8,12 +8,16 @@ const { Op } = require('sequelize');
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
+    const { id } = req.user;
     try {
       const roleId = req.user.roleId;
       const response = await User.findAll({
         where: {
           roleId: {
             [Op.gte]: roleId
+          },
+          id: {
+            [Op.notBetween]: [id, id]
           }
         }
       });

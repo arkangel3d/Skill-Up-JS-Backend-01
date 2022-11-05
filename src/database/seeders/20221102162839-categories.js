@@ -1,26 +1,28 @@
 'use strict';
 
-const { faker } = require('@faker-js/faker');
-
-
 const categories = [
   // i: income, e: expense, t: transfer
   {
-    name: 'transfer',
-    type: 't',
-    description: faker.lorem.words()
+    name: 'Transferencia',
+    type: 'transference',
+    description: 'Transferencia'
   },
   {
-    name: 'grocery store',
-    type: 'e',
-    description: faker.lorem.words()
+    name: 'Carga de saldo',
+    type: 'in',
+    description: 'Carga de saldo'
   },
   {
-    name: 'lotery',
-    type: 'i',
-    description: faker.lorem.words()
+    name: 'Alguiler',
+    type: 'out',
+    description: 'Gastos de alquiler'
   },
-]
+  {
+    name: 'Supermercado',
+    type: 'out',
+    description: 'Compra en el supermercado.'
+  }
+];
 
 module.exports = {
   async up(queryInterface, Sequelize) {

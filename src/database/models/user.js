@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.belongsTo(models.Role, { foreignKey: 'roleId' });
-      User.hasMany(models.Transaction, { foreignKey: 'originUserId' });
-      User.hasMany(models.Transaction, { foreignKey: 'destinationUserId' });
+      User.hasMany(models.Transaction, { foreignKey: 'originUserId', as: 'origin' });
+      User.hasMany(models.Transaction, { foreignKey: 'destinationUserId', as: 'destination' });
     }
   }
 
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       avatar: DataTypes.STRING,
       roleId: DataTypes.INTEGER,
       status: DataTypes.ENUM('active', 'blocked'),
-      balance: DataTypes.Decimal(10, 2)
+      balance: DataTypes.DECIMAL(10, 2)
     },
     {
       sequelize,

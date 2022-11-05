@@ -22,7 +22,7 @@ const externalAgentUser = {
   password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
   roleId: 1,
   status: 'active',
-  balance: 10000000.5
+  balance: 1000000
 };
 
 const userOne = {
@@ -32,7 +32,7 @@ const userOne = {
   password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
   roleId: 3,
   status: 'active',
-  balance: 0
+  balance: 10000
 };
 
 const userTwo = {
@@ -42,7 +42,7 @@ const userTwo = {
   password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
   roleId: 3,
   status: 'active',
-  balance: 0
+  balance: 20000
 };
 
 module.exports = {

@@ -1,5 +1,6 @@
-const { User } = require('../database/models');
 const bcrypt = require('../helpers/bcrypt');
+
+const { User } = require('../database/models');
 
 const loginFileds = async (req, res, next) => {
   const { email, password } = req.body;
