@@ -36,7 +36,7 @@ const transactionsFields = async (req, res, next) => {
 
     // State machine --> Category type: out=expense, in=income, transference
 
-    if (categoryType === 'transferene') {// TRANFERS
+    if (categoryType === 'transference') {// TRANFERS
       console.log('*** TRANSFERENCIA ***');
       if (existOriginUserId.balance < amount) validationErrors.push('Saldo insuficiente');
 
