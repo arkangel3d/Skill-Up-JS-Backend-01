@@ -124,7 +124,7 @@ const transactionsFields = async (req, res, next) => {
       };
 
       if (validationErrors.length > 0) throw new Error
-      next();
+      return next();
     }
 
 
@@ -141,8 +141,6 @@ const transactionsFields = async (req, res, next) => {
     const httpError = createHttpError(error.statusCode, `[Error retrieving transaction category] - [transaction create - POST]: ${error.message}`);
     next(httpError);
   }
-
-  next();
 };
 
 module.exports = transactionsFields;

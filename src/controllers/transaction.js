@@ -2,7 +2,7 @@ const { catchAsync } = require('../helpers/catchAsync');
 const { endpointResponse } = require('../helpers/success');
 const { Op } = require('sequelize');
 const { Transaction, Category, User } = require('../database/models');
-
+const createHttpError = require('http-errors');
 const calExpensesDistribution = require('../helpers/calcExpensesDistribution');
 const calcIncomes = require('../helpers/calcIncomes');
 
@@ -126,6 +126,7 @@ module.exports = {
     try {
       const { amount, origin, destination, category, concept, date } = req.transaction;
 
+
       await Promise.all([
         Transaction.create({
           amount,
@@ -164,6 +165,7 @@ module.exports = {
       const httpError = createHttpError(error.statusCode, `[Error creating transaction] - [index - GET]: ${error.message}`);
       next(httpError);
     }
+    console.log(">>>>>>>>>>>>>>>>>>>>>entra aca?")
   }),
   update: catchAsync(async (req, res, next) => {
     const { id } = req.params;
