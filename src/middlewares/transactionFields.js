@@ -5,7 +5,7 @@ const { ID_ROLE_EXTAGENCY } = require('../constants/roles');
 const transactionsFields = async (req, res, next) => {
   const originUserId = req.user.id;
   let { concept, amount, categoryId, destinationUserId } = req.body;
-  const date = new Date().toString();
+  const date = Date.now()
   amount = Number(amount);
   concept = concept || null;
 

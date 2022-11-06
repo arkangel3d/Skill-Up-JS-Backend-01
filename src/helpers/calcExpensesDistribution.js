@@ -1,11 +1,9 @@
 const { Category } = require('../database/models');
 
-const calExpensesDistribution = async (id, transactions) => {
+const calcExpensesDistribution = async (id, transactions) => {
   try {
     // SE CALCULAN LOS GASTOS (INCLUYE TRANSFERENCIAS REALIZADAS)
-    const expenses = transactions.filter(
-      (el) => el.category.type === 'out' || (el.category.type === 'transference' && el.origin.id === id)
-    );
+    let expenses = transactions.filter((el) => el.category.type === 'out' || (el.category.type === 'transference' && el.origin.id === id));
 
     const totalExpenses = expenses.reduce((acc, el) => acc + el.amount, 0);
 
@@ -18,7 +16,7 @@ const calExpensesDistribution = async (id, transactions) => {
 
     const expensesDistribution = categoriesIds
       .map((el) => {
-        return transactions.filter((tra) => tra.category.id === el).reduce((acc, act) => acc + act.amount, 0);
+        return expenses.filter((tra) => tra.category.id === el).reduce((acc, act) => acc + act.amount, 0);
       })
       .map((element, idx) => ({
         id: idx + 1,
@@ -27,6 +25,8 @@ const calExpensesDistribution = async (id, transactions) => {
         percentage: (element / totalExpenses) * 100
       }));
 
+    expenses = expenses.reverse();
+
     return { expenses, totalExpenses, expensesDistribution };
   } catch (error) {
     const httpError = createHttpError(error.statusCode, `[Error retrieving user's transactions] - [index - GET]: ${error.message}`);
@@ -34,4 +34,4 @@ const calExpensesDistribution = async (id, transactions) => {
   }
 };
 
-module.exports = calExpensesDistribution;
+module.exports = calcExpensesDistribution;

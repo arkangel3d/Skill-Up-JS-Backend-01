@@ -3,7 +3,7 @@ const { endpointResponse } = require('../helpers/success');
 const { Op } = require('sequelize');
 const { Transaction, Category, User } = require('../database/models');
 const createHttpError = require('http-errors');
-const calExpensesDistribution = require('../helpers/calcExpensesDistribution');
+const calcExpensesDistribution = require('../helpers/calcExpensesDistribution');
 const calcIncomes = require('../helpers/calcIncomes');
 
 // example of a controller. First call the service, then build the controller method
@@ -80,7 +80,7 @@ module.exports = {
             attributes: ['id', 'firstName', 'lastName']
           }
         ],
-        order: [['id', 'DESC']]
+        order: [['id', 'ASC']]
       });
 
       // SE MAPEA LA RESPUESTA PARA OBTENER "dataValues" Y LUEGO SE MAPEA PARA CONVERTIR "amount" EN NÚMERO (LLEGA COMO STRING)
@@ -94,7 +94,9 @@ module.exports = {
 
       const { incomes, totalIncomes } = await calcIncomes(id, transactions);
 
-      const { expenses, totalExpenses, expensesDistribution } = await calExpensesDistribution(id, transactions);
+      const { expenses, totalExpenses, expensesDistribution } = await calcExpensesDistribution(id, transactions);
+
+      transactions.reverse();
       endpointResponse({
         res,
         message: 'Lista de tus transacciones.',
@@ -109,7 +111,7 @@ module.exports = {
             amount: expenses.length,
             total: totalExpenses,
             details: expenses,
-            distriburion: expensesDistribution
+            distribution: expensesDistribution
           },
           transactions: {
             amount: transactions.length,
@@ -125,7 +127,6 @@ module.exports = {
   create: catchAsync(async (req, res, next) => {
     try {
       const { amount, origin, destination, category, concept, date } = req.transaction;
-
 
       await Promise.all([
         Transaction.create({
@@ -165,7 +166,7 @@ module.exports = {
       const httpError = createHttpError(error.statusCode, `[Error creating transaction] - [index - GET]: ${error.message}`);
       next(httpError);
     }
-    console.log(">>>>>>>>>>>>>>>>>>>>>entra aca?")
+    console.log('>>>>>>>>>>>>>>>>>>>>>entra aca?');
   }),
   update: catchAsync(async (req, res, next) => {
     const { id } = req.params;
