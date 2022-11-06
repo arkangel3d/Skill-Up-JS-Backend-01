@@ -42,7 +42,6 @@ module.exports = {
           status: 'active'
         },
         attributes: ['id', 'firstName', 'lastName', 'avatar']
-
       });
       return endpointResponse({
         res,
@@ -132,6 +131,51 @@ module.exports = {
         message: 'Usuario eliminado.',
         body: {
           response
+        }
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  block: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      User.update({ status: 'blocked' }, { where: { id } });
+      endpointResponse({
+        res,
+        message: 'Usuario bloqueado.'
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  unblock: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      User.update({ status: 'active' }, { where: { id } });
+      endpointResponse({
+        res,
+        message: 'Usuario desbloqueado.'
+      });
+    } catch (error) {
+      const httpError = createHttpError(error.statusCode, `[Error creating user] - [index - GET]: ${error.message}`);
+      next(httpError);
+    }
+  }),
+  resetpassword: catchAsync(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { password } = req.body;
+      const hashedPassword = await bcrypt.hash(password);
+      User.update({ password: hashedPassword }, { where: { id } });
+      User.update({ status: 'active' }, { where: { id } });
+      endpointResponse({
+        res,
+        message: 'Password reseteado.',
+        body: {
+          password
         }
       });
     } catch (error) {
