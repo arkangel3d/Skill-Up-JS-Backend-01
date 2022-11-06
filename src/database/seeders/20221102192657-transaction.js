@@ -9,14 +9,14 @@ const transactions = [
     originUserId: 1,
     destinationUserId: 2,
     categoryId: 2,
-    transactionDate: faker.date.past()
+    transactionDate: Date.now()
   },
   {
     amount: 20000,
     originUserId: 2,
     destinationUserId: 3,
     categoryId: 1,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Transferencia a Jane'
   },
   {
@@ -24,7 +24,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 3,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Pago alquiler (Inmobiliaria Ezequilian)'
   },
   {
@@ -32,7 +32,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 4,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Compra en Supermercado Disco'
   },
   {
@@ -40,7 +40,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 4,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Compra en Supermercado Cotto'
   },
   {
@@ -48,7 +48,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 8,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Compra de Zapatillas'
   },
   {
@@ -56,7 +56,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 9,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Viaje en taxi hacia la oficina'
   },
   {
@@ -64,7 +64,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 7,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Pago de obra Social'
   },
   {
@@ -72,7 +72,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 5,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Pago factura de internet'
   },
   {
@@ -80,7 +80,7 @@ const transactions = [
     originUserId: 2,
     destinationUserId: 1,
     categoryId: 8,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Compra de camisa'
   },
   // USER_ID: 3
@@ -89,14 +89,14 @@ const transactions = [
     originUserId: 1,
     destinationUserId: 3,
     categoryId: 2,
-    transactionDate: faker.date.past()
+    transactionDate: Date.now()
   },
   {
     amount: 27500,
     originUserId: 3,
     destinationUserId: 1,
     categoryId: 3,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Pago alquiler (Inmobiliaria Roca)'
   },
   {
@@ -104,7 +104,7 @@ const transactions = [
     originUserId: 3,
     destinationUserId: 1,
     categoryId: 4,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Compra en Supermercado Cotto'
   },
   {
@@ -112,7 +112,7 @@ const transactions = [
     originUserId: 3,
     destinationUserId: 1,
     categoryId: 6,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'PAgo monotributo'
   },
   {
@@ -120,7 +120,7 @@ const transactions = [
     originUserId: 3,
     destinationUserId: 1,
     categoryId: 9,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Viaje en taxi hacia la clínica (ida)'
   },
   {
@@ -128,7 +128,7 @@ const transactions = [
     originUserId: 3,
     destinationUserId: 1,
     categoryId: 9,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Viaje en taxi hacia la clínica (vuelta)'
   },
   {
@@ -136,7 +136,7 @@ const transactions = [
     originUserId: 3,
     destinationUserId: 1,
     categoryId: 5,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Pago factura telefonía'
   },
   {
@@ -144,7 +144,7 @@ const transactions = [
     originUserId: 3,
     destinationUserId: 1,
     categoryId: 8,
-    transactionDate: faker.date.past(),
+    transactionDate: Date.now(),
     concept: 'Compra de jean'
   }
 ];
