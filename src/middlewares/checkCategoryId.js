@@ -3,7 +3,6 @@ const { Category } = require('../database/models');
 const checkCategoryId = async (req, res, next) => {
   const { id } = req.params;
   const idFound = await Category.findOne({ where: {id} });
-  console.log('id categoria encontrada: ' + idFound)
 
   if (!idFound) {
     return res.status(404).json({
