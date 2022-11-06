@@ -4,7 +4,6 @@ const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constants/roles');
 const userHasAccessToUpdateTransaction = async (req, res, next) => {
   const { user } = req;
   const { concept } = req.body;
-  console.log(concept);
 
   let { id } = req.params;
   id = Number(id);

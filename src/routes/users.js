@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // CONTROLLERS
-const { create, get, getById, getByEmail, edit, remove } = require('../controllers/users');
+const { create, get, getById, getByEmail, edit, remove, block, unblock, resetpassword } = require('../controllers/users');
 // MIDDLEWARES
 const emailIsUnique = require('../middlewares/emalIsUnique');
 const emailIsValid = require('../middlewares/emailIsValid');
@@ -31,5 +31,14 @@ router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsVal
 
 // Example: http://localhost:3000/users/1 - Need a valid token! - Need a extUser or admin token!
 router.delete('/:id', [tokenIsValid, isAdmin, checkUserId], remove);
+
+// Example: http://localhost:3000/users/block/1 - Need a valid token! - Need a extUser or admin token!
+router.patch('/block/:id', [tokenIsValid, isAdmin, checkUserId], block);
+
+// Example: http://localhost:3000/users/block/1 - Need a valid token! - Need a extUser or admin token!
+router.patch('/unblock/:id', [tokenIsValid, isAdmin, checkUserId], unblock);
+
+// Example: http://localhost:3000/users/block/1 - Need a valid token! - Need a extUser or admin token!
+router.patch('/resetPassword/:id', [tokenIsValid, isAdmin, passwordIdValid, checkUserId], resetpassword);
 
 module.exports = router;
