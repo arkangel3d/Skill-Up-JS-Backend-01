@@ -8,7 +8,6 @@ const users = Array.from({ length: 21 }).map(() => {
     email: faker.internet.email().toLocaleLowerCase(),
     address: faker.address.streetAddress(),
     password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
-    avatar: faker.system.commonFileName('jpg'),
     roleId: 3,
     status: 'active',
     balance: 0
@@ -30,6 +29,7 @@ const userOne = {
   lastName: 'Doe',
   email: 'uno@mail.com',
   password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
+  address: 'San Martín 1862 Piso: 3 Dto: "A"',
   roleId: 3,
   status: 'active',
   balance: 10025
@@ -40,6 +40,7 @@ const userTwo = {
   lastName: 'Doe',
   email: 'dos@mail.com',
   password: '$2a$10$d/lnn7UZrdJ2ltfM5QMZkumOrghswpLGerfXLmIcko8cbxU7vHGYy',
+  address: 'San Martín 1862 Piso: 3 Dto: "A"',
   roleId: 3,
   status: 'active',
   balance: 12643
