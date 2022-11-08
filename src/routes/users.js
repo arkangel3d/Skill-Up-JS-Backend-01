@@ -19,12 +19,13 @@ const userHasAccess = require('../middlewares/userHasAccess');
 // Example: http://localhost:3000/users - Need a valid token!
 router.get('/', [tokenIsValid], get);
 
-// Example: http://localhost:3000/users/1 - Need a valid token!
+// Example: http://localhost:3000/users/1 - Need a valid token! - Need a extUser or admin token!
 router.get('/:id', [tokenIsValid, checkUserId], getById);
 
 // Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
 router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 
+// Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
 
 router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIdValid, checkUserId], edit);
@@ -39,6 +40,6 @@ router.patch('/block/:id', [tokenIsValid, isAdmin, checkUserId], block);
 router.patch('/unblock/:id', [tokenIsValid, isAdmin, checkUserId], unblock);
 
 // Example: http://localhost:3000/users/block/1 - Need a valid token! - Need a extUser or admin token!
-router.patch('/resetPassword/:id', [tokenIsValid, isAdmin, passwordIdValid, checkUserId], resetpassword);
+router.patch('/resetPassword/:id', [tokenIsValid, isAdmin, checkUserId], resetpassword);
 
 module.exports = router;
