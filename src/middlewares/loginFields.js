@@ -40,14 +40,6 @@ const loginFileds = async (req, res, next) => {
     });
   }
 
-  if (user.status === 'blocked') {
-    return res.status(403).json({
-      status: false,
-      code: 403,
-      message: 'Tu cuenta ha sido bloqueada.'
-    });
-  }
-
   delete user.password;
 
   req.user = user;
