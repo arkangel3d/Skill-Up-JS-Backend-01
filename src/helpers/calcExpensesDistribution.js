@@ -20,6 +20,7 @@ const calcExpensesDistribution = async (id, transactions) => {
       .map((el) => {
         return expenses.filter((tra) => tra.category.id === el).reduce((acc, act) => acc + act.amount, 0);
       })
+      .sort((a, b) => b - a)
       .map((element, idx) => ({
         id: idx + 1,
         name: categories.find((el) => el.id === categoriesIds[idx]).name,
