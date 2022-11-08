@@ -84,7 +84,9 @@ module.exports = {
       });
 
       // SE MAPEA LA RESPUESTA PARA OBTENER "dataValues" Y LUEGO SE MAPEA PARA CONVERTIR "amount" EN NÚMERO (LLEGA COMO STRING)
-      transactions = transactions.map((result) => result.dataValues).map((el) => ({ ...el, amount: Number(el.amount) }));
+      transactions = transactions
+        .map((result) => result.dataValues)
+        .map((el) => ({ ...el, amount: Number(el.amount) }));
 
       // SE OBTIENE EL BALANCE DEL USUARIO
       const user = await User.findByPk(id, {
@@ -115,7 +117,10 @@ module.exports = {
           },
           transactions: {
             amount: transactions.length,
-            details: transactions
+            details: [
+              ...incomes.map(income => ({ ...income, flow: 'in' })), //le agrego un campo flow para saber si las transferencias van o vienen
+              ...expenses.map(expense => ({ ...expense, flow: 'out' }))
+            ]
           }
         }
       });
@@ -166,7 +171,7 @@ module.exports = {
       const httpError = createHttpError(error.statusCode, `[Error creating transaction] - [index - GET]: ${error.message}`);
       next(httpError);
     }
-    console.log('>>>>>>>>>>>>>>>>>>>>>entra aca?');
+
   }),
   update: catchAsync(async (req, res, next) => {
     const { id } = req.params;
