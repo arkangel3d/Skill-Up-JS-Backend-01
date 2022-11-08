@@ -86,7 +86,8 @@ module.exports = {
       // SE MAPEA LA RESPUESTA PARA OBTENER "dataValues" Y LUEGO SE MAPEA PARA CONVERTIR "amount" EN NÚMERO (LLEGA COMO STRING)
       transactions = transactions
         .map((result) => result.dataValues)
-        .map((el) => ({ ...el, amount: Number(el.amount) }));
+        .map((el) => ({ ...el, amount: Number(el.amount) }))
+        .sort((a, b) => Number(a.id) - Number(b.id));
 
       // SE OBTIENE EL BALANCE DEL USUARIO
       const user = await User.findByPk(id, {
@@ -98,7 +99,11 @@ module.exports = {
 
       const { expenses, totalExpenses, expensesDistribution } = await calcExpensesDistribution(id, transactions);
 
-      transactions.reverse();
+      const algo = [
+        ...incomes.map((income) => ({ ...income, flow: 'in' })),
+        ...expenses.map((expense) => ({ ...expense, flow: 'out' }))
+      ].sort((a, b) => b.id - a.id);
+
       endpointResponse({
         res,
         message: 'Lista de tus transacciones.',
@@ -117,10 +122,7 @@ module.exports = {
           },
           transactions: {
             amount: transactions.length,
-            details: [
-              ...incomes.map(income => ({ ...income, flow: 'in' })), //le agrego un campo flow para saber si las transferencias van o vienen
-              ...expenses.map(expense => ({ ...expense, flow: 'out' }))
-            ]
+            details: algo
           }
         }
       });
@@ -171,7 +173,6 @@ module.exports = {
       const httpError = createHttpError(error.statusCode, `[Error creating transaction] - [index - GET]: ${error.message}`);
       next(httpError);
     }
-
   }),
   update: catchAsync(async (req, res, next) => {
     const { id } = req.params;
