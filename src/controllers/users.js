@@ -84,7 +84,6 @@ module.exports = {
 
       // SE MAPEA LA RESPUESTA PARA OBTENER "dataValues" Y LUEGO SE MAPEA PARA CONVERTIR "amount" EN NÚMERO (LLEGA COMO STRING)
       transactions = transactions.map((result) => result.dataValues).map((el) => ({ ...el, amount: Number(el.amount) }));
-      console.log(transactions);
 
       // SE OBTIENE EL BALANCE DEL USUARIO
       const user = await User.findByPk(id);
