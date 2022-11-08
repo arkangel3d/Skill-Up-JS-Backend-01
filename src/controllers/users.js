@@ -1,16 +1,17 @@
 const createHttpError = require('http-errors');
-const { User } = require('../database/models');
+const { Category, Transaction, User } = require('../database/models');
 const { endpointResponse } = require('../helpers/success');
 const { catchAsync } = require('../helpers/catchAsync');
 const bcrypt = require('../helpers/bcrypt');
 const { Op } = require('sequelize');
 
 const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constants/roles');
+const calcExpensesDistribution = require('../helpers/calcExpensesDistribution');
+const calcIncomes = require('../helpers/calcIncomes');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
-    const { id } = req.user;
     try {
       const { id, roleId } = req.user;
       if (roleId === ID_ROLE_EXTAGENCY || roleId === ID_ROLE_ADMIN) {
@@ -23,7 +24,7 @@ module.exports = {
               [Op.notBetween]: [id, id]
             }
           },
-          attributes: ['id', 'firstName', 'lastName', 'email', 'password', 'address', 'avatar', 'balance', 'status', 'balance']
+          attributes: ['id', 'firstName', 'lastName', 'email', 'address', 'balance', 'status']
         });
         return endpointResponse({
           res,
@@ -55,14 +56,70 @@ module.exports = {
   }),
   getById: catchAsync(async (req, res, next) => {
     try {
-      const response = req.user;
+      const { id } = req.params;
+      let transactions = await Transaction.findAll({
+        where: {
+          [Op.or]: [{ originUserId: id }, { destinationUserId: id }]
+        },
+        attributes: ['id', 'amount', 'concept', 'transactionDate'],
+        include: [
+          {
+            model: Category,
+            as: 'category',
+            attributes: ['id', 'name', 'description', 'type']
+          },
+          {
+            model: User,
+            as: 'origin',
+            attributes: ['id', 'firstName', 'lastName']
+          },
+          {
+            model: User,
+            as: 'destination',
+            attributes: ['id', 'firstName', 'lastName']
+          }
+        ],
+        order: [['id', 'ASC']]
+      });
+
+      // SE MAPEA LA RESPUESTA PARA OBTENER "dataValues" Y LUEGO SE MAPEA PARA CONVERTIR "amount" EN NÚMERO (LLEGA COMO STRING)
+      transactions = transactions.map((result) => result.dataValues).map((el) => ({ ...el, amount: Number(el.amount) }));
+
+      // SE OBTIENE EL BALANCE DEL USUARIO
+      const user = await User.findByPk(id);
+      const balance = Number(user.balance);
+
+      const { incomes, totalIncomes, incomesDistribution } = await calcIncomes(id, transactions);
+
+      const { expenses, totalExpenses, expensesDistribution } = await calcExpensesDistribution(id, transactions);
+
+      transactions.reverse();
       endpointResponse({
         res,
-        message: 'Usuario encontrado',
-        body: response
+        message: 'Datalles del usuario y su lista de tus transacciones.',
+        body: {
+          balance,
+          user,
+          incomes: {
+            amount: incomes.length,
+            total: totalIncomes,
+            details: incomes,
+            distribution: incomesDistribution
+          },
+          expenses: {
+            amount: expenses.length,
+            total: totalExpenses,
+            details: expenses,
+            distribution: expensesDistribution
+          },
+          transactions: {
+            amount: transactions.length,
+            details: transactions
+          }
+        }
       });
     } catch (error) {
-      const httpError = createHttpError(error.statusCode, `[Error retrieving user] - [Index - GET]: ${error.message}`);
+      const httpError = createHttpError(error.statusCode, `[Error retrieving user's transactions] - [index - GET]: ${error.message}`);
       next(httpError);
     }
   }),

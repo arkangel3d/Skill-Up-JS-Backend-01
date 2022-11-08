@@ -3,7 +3,9 @@ const { Category } = require('../database/models');
 const calcExpensesDistribution = async (id, transactions) => {
   try {
     // SE CALCULAN LOS GASTOS (INCLUYE TRANSFERENCIAS REALIZADAS)
-    let expenses = transactions.filter((el) => el.category.type === 'out' || (el.category.type === 'transference' && el.origin.id === id));
+    let expenses = transactions.filter(
+      (el) => el.category.type === 'out' || (el.category.type === 'transference' && el.origin.id === Number(id))
+    );
 
     const totalExpenses = expenses.reduce((acc, el) => acc + el.amount, 0);
 

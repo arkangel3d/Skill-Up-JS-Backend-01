@@ -56,8 +56,8 @@ module.exports = {
     }
   }),
   me: catchAsync(async (req, res, next) => {
-    const { id } = req.user;
     try {
+      const { id } = req.user;
       let transactions = await Transaction.findAll({
         where: {
           [Op.or]: [{ originUserId: id }, { destinationUserId: id }]
