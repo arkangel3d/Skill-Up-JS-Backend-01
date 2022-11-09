@@ -1,9 +1,21 @@
 const express = require('express');
 
 const router = express.Router();
+const multerSetting = require('../helpers/multerSetting');
 
 // CONTROLLERS
-const { create, get, getById, getByEmail, edit, remove, block, unblock, resetpassword } = require('../controllers/users');
+const { create,
+    get,
+    getById,
+    getByEmail,
+    edit,
+    remove,
+    block,
+    unblock,
+    resetpassword,
+    uploadAvatar
+} = require('../controllers/users');
+
 // MIDDLEWARES
 const emailIsUnique = require('../middlewares/emalIsUnique');
 const emailIsValid = require('../middlewares/emailIsValid');
@@ -16,6 +28,9 @@ const tokenIsValid = require('../middlewares/tokenIsValid');
 const isAdmin = require('../middlewares/isAdmin');
 const userHasAccess = require('../middlewares/userHasAccess');
 
+
+const upload = multerSetting('./public/img/profiles');
+
 // Example: http://localhost:3000/users - Need a valid token!
 router.get('/', [tokenIsValid], get);
 
@@ -27,6 +42,8 @@ router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 
 // Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
+
+router.post('/profile-pic', upload.single('profile-pic'), uploadAvatar)
 
 router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIdValid, checkUserId], edit);
 

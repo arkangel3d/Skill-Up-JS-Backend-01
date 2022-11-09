@@ -160,6 +160,16 @@ module.exports = {
       next(httpError);
     }
   }),
+  uploadAvatar: catchAsync(async (req, res, next) => {
+    const uploadedFileName = req.uploadedFileName
+    endpointResponse({
+      res,
+      message: 'Imagen subida',
+      body: {
+        uploadedFileName
+      }
+    })
+  }),
   edit: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;

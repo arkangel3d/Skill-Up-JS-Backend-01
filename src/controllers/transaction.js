@@ -99,7 +99,7 @@ module.exports = {
 
       const { expenses, totalExpenses, expensesDistribution } = await calcExpensesDistribution(id, transactions);
 
-      const algo = [
+      const transactionsWithFlow = [
         ...incomes.map((income) => ({ ...income, flow: 'in' })),
         ...expenses.map((expense) => ({ ...expense, flow: 'out' }))
       ].sort((a, b) => b.id - a.id);
@@ -122,7 +122,7 @@ module.exports = {
           },
           transactions: {
             amount: transactions.length,
-            details: algo
+            details: transactionsWithFlow
           }
         }
       });
