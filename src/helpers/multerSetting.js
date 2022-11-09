@@ -8,7 +8,8 @@ const multerSetting = (storageFolder) => {
             cb(null, storageFolder)
         },
         filename: (req, file, cb) => {
-            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+            req.uploadedFileName = `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+            cb(null, req.uploadedFileName)
         }
     });
 
