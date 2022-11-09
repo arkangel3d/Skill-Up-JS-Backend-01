@@ -180,10 +180,8 @@ module.exports = {
         res,
         message: 'Usuario editado.',
         body: {
-          id,
           firstName,
-          lastName,
-          password: hashedPassword
+          lastName
         }
       });
     } catch (error) {
