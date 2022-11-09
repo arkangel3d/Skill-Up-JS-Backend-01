@@ -149,9 +149,14 @@ module.exports = {
       if (origin.id !== 1) {
         await User.update({ balance: Number(origin.balance) - amount }, { where: { id: origin.id } });
       }
+
+      let message = 'Gasto cargado.';
+      if (category.id === 1) message = 'Transferencia exitosa.';
+      if (category.id === 2) message = 'Recarga exitosa.';
+
       endpointResponse({
         res,
-        message: 'Transaccion creada.',
+        message,
         body: {
           amount,
           origin: {
