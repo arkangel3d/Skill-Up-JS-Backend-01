@@ -4,7 +4,7 @@ const categoryNameExists = async (req, res, next) => {
   const { name } = req.body;
   const nameFound = await Category.findOne({ where: { name } });
 
-  if (nameFound) {
+  if (nameFound && Number(nameFound?.id) !== Number(req.params.id)) {
     return res.status(404).json({
       status: false,
       code: 404,
