@@ -13,7 +13,7 @@ const {
   lastNameIsValid,
   checkUserId,
   checkUserEmail,
-  passwordIdValid,
+  passwordIsValid,
   tokenIsValid,
   isAdmin,
   userHasAccess,
