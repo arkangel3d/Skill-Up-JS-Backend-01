@@ -4,7 +4,7 @@ const firstNameIsValid = require('./firstNameIsValid');
 const lastNameIsValid = require('./lastNameIsValid');
 const checkUserId = require('./checkUserId');
 const checkUserEmail = require('./checkUserEmail');
-const passwordIdValid = require('./passwordIsValid');
+const passwordIsValid = require('./passwordIsValid');
 const tokenIsValid = require('./tokenIsValid');
 const isAdmin = require('./isAdmin');
 const userHasAccess = require('./userHasAccess');
@@ -17,7 +17,7 @@ module.exports = {
     lastNameIsValid,
     checkUserId,
     checkUserEmail,
-    passwordIdValid,
+    passwordIsValid,
     tokenIsValid,
     isAdmin,
     userHasAccess,
