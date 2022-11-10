@@ -2,7 +2,6 @@ const multerSetting = require('../helpers/multerSetting');
 const upload = multerSetting('./public/img/profiles');
 const uploadSingleImage = upload.single('profile-pic');
 
-
 const profilePictureHandler = (req, res, next) => {
     uploadSingleImage(req, res, err => {
         if (err) {
