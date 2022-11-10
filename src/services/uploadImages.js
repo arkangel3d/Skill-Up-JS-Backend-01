@@ -16,7 +16,7 @@ imageStorage.upload = async (name) => {
     folder: process.env.CLOUDINARY_FOLDER_NAME,
     width: process.env.CLOUDINARY_IMAGE_WIDTH,
     height: process.env.CLOUDINARY_IMAGE_HEIGHT,
-    crop: 'scale'
+    crop: 'fill'
   });
   unlink(tempPath, (err) => {
     if (err) throw new Error(err);
