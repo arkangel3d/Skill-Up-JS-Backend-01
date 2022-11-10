@@ -20,6 +20,7 @@ const {
   profilePictureHandler
 } = require('../middlewares');
 
+
 // Example: http://localhost:3000/users - Need a valid token!
 router.get('/', [tokenIsValid], get);
 
@@ -30,11 +31,11 @@ router.get('/:id', [tokenIsValid, checkUserId], getById);
 router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 
 // Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
-router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
+router.post('/', [firstNameIsValid, lastNameIsValid, passwordIsValid, emailIsValid, emailIsUnique], create);
 
 router.post('/profile-pic', [tokenIsValid, profilePictureHandler], uploadAvatar);
 
-router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIdValid, checkUserId], edit);
+router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIsValid, checkUserId], edit);
 
 // Example: http://localhost:3000/users/1 - Need a valid token! - Need a extUser or admin token!
 router.delete('/:id', [tokenIsValid, isAdmin, checkUserId], remove);
