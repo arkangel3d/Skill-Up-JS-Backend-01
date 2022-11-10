@@ -9,16 +9,13 @@ module.exports = {
   login: catchAsync(async (req, res, next) => {
     try {
       const { user } = req;
+      const { password, balance, createdAt, updatedAt, ...rest } = user;
       const token = jwt.sign(user);
       endpointResponse({
         res,
         message: 'Login exitoso.',
         body: {
-          user: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            role: user.roleId
-          },
+          user: rest,
           token
         }
       });

@@ -8,7 +8,6 @@ const calcIncomes = async (id, transactions) => {
     const totalIncomes = incomes.reduce((acc, el) => acc + el.amount, 0);
 
     const categoriesIds = Array.from(new Set(incomes.map((el) => el.category.id)));
-    console.log(categoriesIds);
 
     let categories = await Category.findAll({
       attributes: ['id', 'name']

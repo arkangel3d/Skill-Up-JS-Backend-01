@@ -8,6 +8,7 @@ const { Op } = require('sequelize');
 const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constants/roles');
 const calcExpensesDistribution = require('../helpers/calcExpensesDistribution');
 const calcIncomes = require('../helpers/calcIncomes');
+const imageStorage = require('../services/uploadImages');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -93,7 +94,6 @@ module.exports = {
 
       const { expenses, totalExpenses, expensesDistribution } = await calcExpensesDistribution(id, transactions);
 
-      transactions.reverse();
       endpointResponse({
         res,
         message: 'Datalles del usuario y su lista de tus transacciones.',
@@ -114,7 +114,10 @@ module.exports = {
           },
           transactions: {
             amount: transactions.length,
-            details: transactions
+            details: [
+              ...incomes.map((income) => ({ ...income, flow: 'in' })), //le agrego un campo flow para saber si las transferencias van o vienen
+              ...expenses.map((expense) => ({ ...expense, flow: 'out' }))
+            ]
           }
         }
       });
@@ -158,20 +161,31 @@ module.exports = {
       next(httpError);
     }
   }),
+  uploadAvatar: catchAsync(async (req, res, next) => {
+    const { id } = req.user;
+    const uploadedFileName = req.uploadedFileName;
+    const image = await imageStorage.upload(uploadedFileName);
+    await User.update({ avatar: image.url }, { where: { id } });
+    endpointResponse({
+      res,
+      message: 'Imagen subida',
+      body: {
+        url: image.url
+      }
+    });
+  }),
   edit: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
       const { firstName, lastName, password } = req.body;
       const hashedPassword = await bcrypt.hash(password);
-      User.update({ firstName, lastName, password: hashedPassword }, { where: { id } });
+      await User.update({ firstName, lastName, password: hashedPassword }, { where: { id } });
       endpointResponse({
         res,
         message: 'Usuario editado.',
         body: {
-          id,
           firstName,
-          lastName,
-          password: hashedPassword
+          lastName
         }
       });
     } catch (error) {

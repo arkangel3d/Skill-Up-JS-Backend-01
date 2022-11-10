@@ -25,7 +25,8 @@ const calcExpensesDistribution = async (id, transactions) => {
         name: categories.find((el) => el.id === categoriesIds[idx]).name,
         total: element,
         percentage: (element / totalExpenses) * 100
-      }));
+      }))
+      .sort((a, b) => b.percentage - a.percentage);
 
     expenses = expenses.reverse();
 
