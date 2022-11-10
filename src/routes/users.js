@@ -7,19 +7,18 @@ const { create, get, getById, getByEmail, edit, remove, block, unblock, resetpas
 
 // MIDDLEWARES
 const {
-    emailIsUnique,
-    emailIsValid,
-    firstNameIsValid,
-    lastNameIsValid,
-    checkUserId,
-    checkUserEmail,
-    passwordIsValid,
-    tokenIsValid,
-    isAdmin,
-    userHasAccess,
-    profilePictureHandler
-} = require('../middlewares')
-
+  emailIsUnique,
+  emailIsValid,
+  firstNameIsValid,
+  lastNameIsValid,
+  checkUserId,
+  checkUserEmail,
+  passwordIsValid,
+  tokenIsValid,
+  isAdmin,
+  userHasAccess,
+  profilePictureHandler
+} = require('../middlewares');
 
 // Example: http://localhost:3000/users - Need a valid token!
 router.get('/', [tokenIsValid], get);
