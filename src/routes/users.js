@@ -3,33 +3,22 @@ const express = require('express');
 const router = express.Router();
 
 // CONTROLLERS
-const { create,
-    get,
-    getById,
-    getByEmail,
-    edit,
-    remove,
-    block,
-    unblock,
-    resetpassword,
-    uploadAvatar
-} = require('../controllers/users');
+const { create, get, getById, getByEmail, edit, remove, block, unblock, resetpassword, uploadAvatar } = require('../controllers/users');
 
 // MIDDLEWARES
 const {
-    emailIsUnique,
-    emailIsValid,
-    firstNameIsValid,
-    lastNameIsValid,
-    checkUserId,
-    checkUserEmail,
-    passwordIdValid,
-    tokenIsValid,
-    isAdmin,
-    userHasAccess,
-    profilePictureHandler
-} = require('../middlewares')
-
+  emailIsUnique,
+  emailIsValid,
+  firstNameIsValid,
+  lastNameIsValid,
+  checkUserId,
+  checkUserEmail,
+  passwordIdValid,
+  tokenIsValid,
+  isAdmin,
+  userHasAccess,
+  profilePictureHandler
+} = require('../middlewares');
 
 // Example: http://localhost:3000/users - Need a valid token!
 router.get('/', [tokenIsValid], get);
@@ -43,7 +32,7 @@ router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 // Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
 
-router.post('/profile-pic', profilePictureHandler, uploadAvatar)
+router.post('/profile-pic', [tokenIsValid, profilePictureHandler], uploadAvatar);
 
 router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIdValid, checkUserId], edit);
 
