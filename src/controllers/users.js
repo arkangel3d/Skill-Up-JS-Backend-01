@@ -8,6 +8,7 @@ const { Op } = require('sequelize');
 const { ID_ROLE_EXTAGENCY, ID_ROLE_ADMIN } = require('../constants/roles');
 const calcExpensesDistribution = require('../helpers/calcExpensesDistribution');
 const calcIncomes = require('../helpers/calcIncomes');
+const imageStorage = require('../services/uploadImages');
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -161,21 +162,24 @@ module.exports = {
     }
   }),
   uploadAvatar: catchAsync(async (req, res, next) => {
-    const uploadedFileName = req.uploadedFileName
+    const { id } = req.user;
+    const uploadedFileName = req.uploadedFileName;
+    const image = await imageStorage.upload(uploadedFileName);
+    await User.update({ avatar: image.url }, { where: { id } });
     endpointResponse({
       res,
       message: 'Imagen subida',
       body: {
-        uploadedFileName
+        url: image.url
       }
-    })
+    });
   }),
   edit: catchAsync(async (req, res, next) => {
     try {
       const { id } = req.params;
       const { firstName, lastName, password } = req.body;
       const hashedPassword = await bcrypt.hash(password);
-      User.update({ firstName, lastName, password: hashedPassword }, { where: { id } });
+      await User.update({ firstName, lastName, password: hashedPassword }, { where: { id } });
       endpointResponse({
         res,
         message: 'Usuario editado.',
