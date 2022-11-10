@@ -43,6 +43,7 @@ router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 // Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIsValid, emailIsValid, emailIsUnique], create);
 
+// Example: http://localhost:3000/users/profile-pic 
 router.post('/profile-pic', profilePictureHandler, uploadAvatar)
 
 router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIsValid, checkUserId], edit);
