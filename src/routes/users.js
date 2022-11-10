@@ -1,7 +1,6 @@
 const express = require('express');
 
 const router = express.Router();
-const multerSetting = require('../helpers/multerSetting');
 
 // CONTROLLERS
 const { create,
@@ -17,19 +16,20 @@ const { create,
 } = require('../controllers/users');
 
 // MIDDLEWARES
-const emailIsUnique = require('../middlewares/emalIsUnique');
-const emailIsValid = require('../middlewares/emailIsValid');
-const firstNameIsValid = require('../middlewares/firstNameIsValid');
-const lastNameIsValid = require('../middlewares/lastNameIsValid');
-const checkUserId = require('../middlewares/checkUserId');
-const checkUserEmail = require('../middlewares/checkUserEmail');
-const passwordIdValid = require('../middlewares/passwordIsValid');
-const tokenIsValid = require('../middlewares/tokenIsValid');
-const isAdmin = require('../middlewares/isAdmin');
-const userHasAccess = require('../middlewares/userHasAccess');
+const {
+    emailIsUnique,
+    emailIsValid,
+    firstNameIsValid,
+    lastNameIsValid,
+    checkUserId,
+    checkUserEmail,
+    passwordIdValid,
+    tokenIsValid,
+    isAdmin,
+    userHasAccess,
+    profilePictureHandler
+} = require('../middlewares')
 
-
-const upload = multerSetting('./public/img/profiles');
 
 // Example: http://localhost:3000/users - Need a valid token!
 router.get('/', [tokenIsValid], get);
@@ -43,7 +43,7 @@ router.get('/email/:email', [tokenIsValid, checkUserEmail], getByEmail);
 // Example: http://localhost:3000/users/email/ext@usr.com - Need a valid token!
 router.post('/', [firstNameIsValid, lastNameIsValid, passwordIdValid, emailIsValid, emailIsUnique], create);
 
-router.post('/profile-pic', upload.single('profile-pic'), uploadAvatar)
+router.post('/profile-pic', profilePictureHandler, uploadAvatar)
 
 router.put('/:id', [tokenIsValid, userHasAccess, firstNameIsValid, lastNameIsValid, passwordIdValid, checkUserId], edit);
 
