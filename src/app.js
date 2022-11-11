@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
+const { Server } = require('socket.io');
 
 const { sequelize } = require('./database/models');
 
@@ -38,6 +39,27 @@ app.use((err, req, res) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const io = new Server({
+  cors: {
+    origin: '*'
+  }
+});
+
+// Socket.io
+io.on('connection', (socket) => {
+  console.log('User connected: ', socket.id);
+
+  socket.on('join_channel', (data) => {
+    socket.join(data);
+  });
+
+  socket.on('send_transaction', (data) => {
+    socket.to(data.channel).emit('income_transaction', data.message);
+  });
+});
+
+io.listen(5000);
 
 app.listen(port, async () => {
   try {
