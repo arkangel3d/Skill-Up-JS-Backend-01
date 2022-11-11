@@ -94,6 +94,11 @@ module.exports = {
 
       const { expenses, totalExpenses, expensesDistribution } = await calcExpensesDistribution(id, transactions);
 
+      const transactionsWithFlow = [
+        ...incomes.map((income) => ({ ...income, flow: 'in' })),
+        ...expenses.map((expense) => ({ ...expense, flow: 'out' }))
+      ].sort((a, b) => b.id - a.id);
+
       endpointResponse({
         res,
         message: 'Datalles del usuario y su lista de tus transacciones.',
@@ -114,10 +119,7 @@ module.exports = {
           },
           transactions: {
             amount: transactions.length,
-            details: [
-              ...incomes.map((income) => ({ ...income, flow: 'in' })), //le agrego un campo flow para saber si las transferencias van o vienen
-              ...expenses.map((expense) => ({ ...expense, flow: 'out' }))
-            ]
+            details: transactionsWithFlow
           }
         }
       });
