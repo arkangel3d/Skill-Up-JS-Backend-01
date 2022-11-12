@@ -12,6 +12,7 @@ const { sequelize } = require('./database/models');
 const indexRouter = require('./routes/index');
 
 const port = process.env.PORT || 3000;
+const socketPort = process.env.SOCKET_PORT || 6379;
 
 const app = express();
 app.use(cors());
@@ -40,13 +41,13 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
+// Socket.io
 const io = new Server({
   cors: {
     origin: '*'
   }
 });
 
-// Socket.io
 io.on('connection', (socket) => {
   console.log('User connected: ', socket.id);
 
@@ -59,7 +60,7 @@ io.on('connection', (socket) => {
   });
 });
 
-io.listen(5000);
+io.listen(socketPort);
 
 app.listen(port, async () => {
   try {
@@ -68,6 +69,7 @@ app.listen(port, async () => {
     console.clear();
     console.log('----------------------------');
     console.log('Server live on port: ', port);
+    console.log('Socket live on port: ', socketPort);
     console.log('MySQL connection established');
     console.log('----------------------------');
   } catch (error) {
