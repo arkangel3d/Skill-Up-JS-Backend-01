@@ -167,15 +167,6 @@ module.exports = {
     const { id } = req.user;
     const uploadedFileName = req.uploadedFileName;
     const image = await imageStorage.upload(uploadedFileName);
-    /*const user = await User.findOne({
-      attributes: ["avatar"],
-      where: { id }
-    })
-    let oldAvatar = '';
-    if (user.avatar) {
-      oldAvatar = user.avatar;
-      // imageStorage.destroy(oldAvatar)
-    }*/
     await User.update({ avatar: image.url }, { where: { id } });
     endpointResponse({
       res,

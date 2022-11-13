@@ -1,60 +1,79 @@
-# Backend Node Template
+# AlkyBank - (backend)
 
-## ✅ Primero lo primero: instalar las dependencias iniciales del proyecto antes de trabajar:
+Proyecto para Alkemy - Desarrollo fullstack JS.
+Wallet que le permite a los usuarios realizar transacciones de forma virtual y facilitar las
+operaciones entre personas.
+
+## Stack de tecnologías
+
+[Node.js](https://nodejs.org) -
+[Express](https://expressjs.com/) -
+[Sequelize](https://sequelize.org/) -
+[JWT](https://github.com/auth0/node-jsonwebtoken#readme) -
+[Bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme) -
+[Socket.io](https://socket.io/)
+
+## Instalación
+
+#### Clonar el proyecto:
+
+```bash
+  git clone https://github.com/arkangel3d/Skill-Up-JS-Backend-01.git
+  cd Skill-Up-JS-Backend-01
 ```
-npm install
+
+#### Reconstruir las dependencias:
+
+```bash
+  npm install
 ```
-## 🚩 Recomendaciones:
-Utilizar la versión de Node v14.x
 
-## 💡 El proyecto utliza Sequelize como ORM. Comandos utiles del CLI:
+#### Variables de entorno
 
-### Como generar un modelo desde cero
+Para ejecuar este proyecto, es necesario agregar las siguentes variables de entorno en su archivo **.env** .
+
+`PORT`
+
+`DB_NAME`
+`DB_PORT`
+`DB_HOST`
+`DB_USER`
+`DB_PASSWORD`
+
+`SECRET`
+
+`CLOUDINARY_CLOUD_NAME`
+`CLOUDINARY_API_KEY`
+`CLOUDINARY_API_SECRET`
+`CLOUDINARY_FOLDER_NAME`
+`CLOUDINARY_IMAGE_WIDTH`
+`CLOUDINARY_IMAGE_HEIGHT`
+
+Puede renombrar el archivo **.env.example** a **.env** . En él encontrará datos de ejemplo para correr el proyecto en modo local.
+
+#### Obtener credenciales de Cloudinary :
+
+Registrarse en [Cloudinary](https://cloudinary.com/) . Dirigirse al Dashboard para obtener el _Cloud Name_, _API Key_ y _API Secret_ .
+![Cloudinary](https://nazgul.com.ar/images/cloudinary.jpg)
+
+#### Creación de la base de datos, migraciones y seeds:
+
+```bash
+  npx sequelize-cli db:drop
+  npx sequelize-cli db:create
+  npx sequelize-cli db:migrate
+  npx sequelize-cli db:seed:all
 ```
-npx sequelize model:generate --name Ejemplo --attributes ejemplo:string
+
+Ejecutar el proyecto:
+
+```bash
+  npm start
 ```
-### Crear la base de datos
-```
-npx sequelize db:create
-```
-### Migrar modelos creados previamente
-```
-npx sequelize db:migrate
-```
-### Borrar la base de datos que creamos
-```
-npx sequelize db:drop
-``` 
 
-## 🏗 Algunos datos del proyecto:
-- La estructura de carpetas es del patron MVC
-- Las respuestas positivas las devuelve como un objecto. Las negativas las gestiona como un HTML
-- En el proyecto encontrarán un ejemplo de como se implementa el flujo de información dentro de la app.
-- Para el flujo de trabajo utilizaremos Gitflow. Para el mismo deberan crear una rama con el numero de tarjeta con el que esten trabajando
+## Autores
 
-![image](https://user-images.githubusercontent.com/79473217/193649836-2720c8f4-a038-4014-b9a5-c515a9aee273.png)
-- Cuando el trabajo este terminado, se debe generar el "Pull Request" o PR como le solemos llamar. El proyecto ya cuenta con un template de PR, por lo que ustedes solo tendran que completar con los datos que les indica el template. Esta seria una imagen de ejemplo de un PR con su evidencia en caso de falla y su caso de éxito.
-
-![image](https://user-images.githubusercontent.com/79473217/193650283-f9d52ece-3548-4a27-8cbf-63fc9fcf72e2.png)
-- Las respuestas positivas se gestionan con el helper enpodintResponse, y los negativos con createHtppError de la libreria http-errors.
-Ejemplo de satisfactoria
-
-Ejemplo de respuesta negativa:
-![image](https://user-images.githubusercontent.com/79473217/193651690-f0081ce6-9d2e-43ca-9986-bec8a9082d7f.png)
-
-
-
-## 🚑 Helpers basicos:
-### catchAsync 
-Es una función para estandarizar la forma en la que se crean los metodos en los controladores. Para ver mas buscar en helpers/catchAsync.js
-
-### endpointResponse:
-Estructura las respuestas positivas de toda la app. Dentro del archivo helpers/success.js podran ver que parametros le pueden pasar.
-
-### ErrorObject:
-Un objecto de error, el cual puede recibir varios atributos (pueden verlo en helpers/error.js)
-El mismo es una extensión de el objecto Error nativo de JS. Sirve para devolver errores cuando esten por fuera del controlador, y que los errores sean interceptados por el CATCH que tendran en los controllers. 
-
-
-
-
+- [Diego Aguilar](https://www.linkedin.com/in/diego-mathias-aguilar-13233a56/)
+- [Adrián Centurión](https://www.linkedin.com/in/adrian-centurion/)
+- [Luca Gelmini](https://www.linkedin.com/in/lgelmini/)
+- [Federico González](https://www.linkedin.com/in/fededg/)

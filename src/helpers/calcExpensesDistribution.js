@@ -12,7 +12,7 @@ const calcExpensesDistribution = async (id, transactions) => {
     const categoriesIds = Array.from(new Set(expenses.map((el) => el.category.id)));
 
     let categories = await Category.findAll({
-      attributes: ['id', 'name']
+      attributes: ['id', 'name', 'description']
     });
     categories = categories.map((result) => result.dataValues);
 
@@ -23,6 +23,7 @@ const calcExpensesDistribution = async (id, transactions) => {
       .map((element, idx) => ({
         id: idx + 1,
         name: categories.find((el) => el.id === categoriesIds[idx]).name,
+        description: categories.find((el) => el.id === categoriesIds[idx]).description,
         total: element,
         percentage: (element / totalExpenses) * 100
       }))
