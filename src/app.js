@@ -1,28 +1,33 @@
+const { Server } = require('socket.io');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
+const http = require('http');
 const logger = require('morgan');
-const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
-const { Server } = require('socket.io');
 
 const { sequelize } = require('./database/models');
 
 const indexRouter = require('./routes/index');
 
-const port = process.env.PORT || 3000;
-const socketPort = process.env.SOCKET_PORT || 6379;
+const port = process.env.PORT || 3005;
 
 const app = express();
-app.use(cors());
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+});
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
@@ -41,13 +46,7 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
-// Socket.io
-const io = new Server({
-  cors: {
-    origin: '*'
-  }
-});
-
+// socket.io
 io.on('connection', (socket) => {
   console.log('User connected: ', socket.id);
 
@@ -60,16 +59,13 @@ io.on('connection', (socket) => {
   });
 });
 
-io.listen(socketPort);
-
-app.listen(port, async () => {
+server.listen(port, async () => {
   try {
     await sequelize.authenticate();
     if (process.env.NODE_ENV === 'test') return;
     console.clear();
     console.log('----------------------------');
     console.log('Server live on port: ', port);
-    console.log('Socket live on port: ', socketPort);
     console.log('MySQL connection established');
     console.log('----------------------------');
   } catch (error) {

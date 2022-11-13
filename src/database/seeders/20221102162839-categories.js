@@ -13,7 +13,7 @@ const categories = [
     description: 'Carga de saldo'
   },
   {
-    name: 'Alguiler',
+    name: 'Alquiler',
     type: 'out',
     description: 'Gastos de alquiler'
   },
