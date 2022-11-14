@@ -25,7 +25,7 @@ module.exports = {
               [Op.notBetween]: [id, id]
             }
           },
-          attributes: ['id', 'firstName', 'lastName', 'email', 'address', 'balance', 'status', 'roleId']
+          attributes: ['id', 'firstName', 'lastName', 'email', 'address', 'balance', 'status']
         });
         return endpointResponse({
           res,
@@ -43,7 +43,7 @@ module.exports = {
           },
           status: 'active'
         },
-        attributes: ['id', 'firstName', 'lastName', 'avatar', 'roleId']
+        attributes: ['id', 'firstName', 'lastName', 'avatar']
       });
       return endpointResponse({
         res,
