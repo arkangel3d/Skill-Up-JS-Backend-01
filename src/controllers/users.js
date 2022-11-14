@@ -147,7 +147,7 @@ module.exports = {
       const avatar = req.body.avatar || null;
       const ID_ROLE_USER = 3; // USER ID CORRESPONDIENTE AL ROL DE USUARIO
       const hashedPassword = await bcrypt.hash(password);
-      await User.create({ firstName, lastName, email, password: hashedPassword, avatar, roleId: ID_ROLE_USER });
+      await User.create({ firstName, lastName, email, password: hashedPassword, avatar, roleId: ID_ROLE_USER, status: 'active' });
       endpointResponse({
         res,
         message: 'Usuario creado.',
